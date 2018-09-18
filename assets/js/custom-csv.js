@@ -84,25 +84,8 @@ var openFile = function (event) {
   var input = event.target;
   var reader = new FileReader();
 
-  reader.onload = function () {
-    
+  reader.onload = function () {    
     hot.loadData(csv2JSON(reader.result));
-    /*$.ajax({
-      type: "POST",
-      url: "http://localhost/Phpstorm/DX/ajax.php",
-      data: {
-        "recup": csv2JSON(reader.result)
-      },
-      success: function (data, textStatus, jqXHR) {
-        
-        export2CSVFile(null, data, "export");
-        console.log("Succes");
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        alert(textStatus)
-      },
-      dataType: "json"
-    });*/
   };
   reader.readAsText(input.files[0]);
 };

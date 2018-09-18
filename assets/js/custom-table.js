@@ -109,7 +109,19 @@ $('#start').click(function (e) {
 			if (dataObject.length === 0) {
 				alert('Please fill the table first');
 			} else {
-				export2CSVFile(null, dataObject, 'export');
+				$.ajax({
+					type: "POST",
+					url: "http://back-back.a3c1.starter-us-west-1.openshiftapps.com/index.php",
+					data: { "recup": dataObject },
+					success: function (data, textStatus, jqXHR) {
+        				export2CSVFile(null, data, "export");
+						console.log("Succes");
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						alert(errorThrown)
+					},
+					dataType: "json"
+				});
 			}
 		} else {
 			alert('Check your data');
