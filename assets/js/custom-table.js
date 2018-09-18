@@ -111,7 +111,7 @@ $('#start').click(function (e) {
 			} else {
 				$.ajax({
 					type: "POST",
-					url: "http://php-front.1d35.starter-us-east-1.openshiftapps.com/index.php",
+					url: "http://php-back.a3c1.starter-us-west-1.openshiftapps.com/index.php",
 					data: { "recup": dataObject },
 					success: function (data, textStatus, jqXHR) {
         					export2CSVFile(null, data, "export");
