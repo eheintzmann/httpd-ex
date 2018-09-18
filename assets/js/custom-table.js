@@ -111,14 +111,14 @@ $('#start').click(function (e) {
 			} else {
 				$.ajax({
 					type: "POST",
-					url: "http://php-back.a3c1.starter-us-west-1.openshiftapps.com",
+					url: "http://php-back.a3c1.starter-us-west-1.openshiftapps.com/index.php",
 					data: { "recup": dataObject },
 					success: function (data, textStatus, jqXHR) {
-        				export2CSVFile(null, data, "export");
+        					export2CSVFile(null, data, "export");
 						console.log("Succes");
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
-						alert(errorThrown)
+						alert(textStatus)
 					},
 					dataType: "json"
 				});
