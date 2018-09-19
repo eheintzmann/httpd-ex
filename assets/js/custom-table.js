@@ -25,7 +25,7 @@ var hotElementContainer = hotElement.parentNode;
 
 var hotSettings = {
   data: [],
-  columns: [{
+  /*columns: [{
       data: 'Year',
       type: 'numeric',
       allowEmpty: false,
@@ -59,7 +59,7 @@ var hotSettings = {
       className: 'htCenter'
 
     },
-  ],
+  ],*/
   stretchH: 'all',
   //width: 806,
   autoWrapRow: true,
@@ -67,13 +67,13 @@ var hotSettings = {
   //maxRows: 22,
   contextMenu: true,
   //rowHeaders: true,
-  colHeaders: [
+  /*colHeaders: [
     'Year',
     'Ford',
     'Tesla',
     'Toyota',
     'Honda',
-  ],
+  ],*/
   manualRowResize: true,
   manualColumnResize: true,
   columnSorting: true,
@@ -85,20 +85,21 @@ var hotSettings = {
   minRows: 1,
   //minSpareRows: 1,  
 }
+
 var hot = new Handsontable(hotElement, hotSettings);
-// hot.loadData(dataObject)
+//const plugin = hot.getPlugin('autoColumnSize');
 
-const plugin = hot.getPlugin('autoColumnSize');
-
-Handsontable.hooks.add('beforeRender', function(changes) {
-	alert('change detected');
+/*Handsontable.hooks.add('beforeRender', function(changes) {
+	console.log('Render detected');
 	plugin.clearCache();
 }, hot);
-
+*/
 
 // Fix to display table in tabs
 $('#table-tab').on('shown.bs.tab', function (e) {
-  hot.render();
+  if (!(typeof hot === 'undefined')) {
+	  hot.render();
+  }
 })
 
 $('#start').click(function (e) {
@@ -114,7 +115,7 @@ $('#start').click(function (e) {
 					url: "http://php-back.a3c1.starter-us-west-1.openshiftapps.com/index.php",
 					data: { "recup": dataObject },
 					success: function (data, textStatus, jqXHR) {
-        					export2CSVFile(null, data, "export");
+        				export2CSVFile(null, data, "export");
 						console.log("Succes");
 					},
 					error: function (jqXHR, textStatus, errorThrown) {

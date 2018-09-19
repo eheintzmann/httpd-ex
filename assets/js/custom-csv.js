@@ -1,3 +1,31 @@
+function csv2headers(csv) {
+  /* Extract first line of the CSV File */
+	var firstline = csv.split("\n")[0];
+
+	/* Find line endings */
+	var lineEnding = "\r\n";
+	if (firstline.indexOf("\r") >= 0) {
+		lineEnding = "\r\n";
+	} else {
+		lineEnding = "\n";
+	}
+	
+	/* Find separator */
+	var	separator = ";";
+	if (firstline.indexOf(",") >= 0) {
+		separator = ",";
+	} else if (firstline.indexOf(";") >= 0) {
+		separator = ";";
+	}
+  var lines = csv.split(lineEnding);
+  var headers = lines[0].split(separator);
+  var obj = []
+  for (var i = 0; i < headers.length; i++) {
+        obj[i] = headers[i];
+  }
+  return obj;
+}
+
 function JSON2csv(objArray) {
   var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
   var str = '';
@@ -63,18 +91,43 @@ function export2CSVFile(headers, items, fileTitle) {
 }
 
 function csv2JSON(csv) {
-  var lines = csv.split("\n");
-  var result = [];
-  var headers = lines[0].split(",");
+	
+    /* Extract first line of the CSV File */
+	var firstline = csv.split("\n")[0];
+	var result = [];
+
+	/* Find line endings */
+	var lineEnding = "\r\n";
+	if (firstline.indexOf("\r") >= 0) {
+		lineEnding = "\r\n";
+	} else {
+		lineEnding = "\n";
+	}
+	
+	/* Find separator */
+	var	separator = ";";
+	if (firstline.indexOf(",") >= 0) {
+		separator = ",";
+	} else if (firstline.indexOf(";") >= 0) {
+		separator = ";";
+	}
+	
+  lines = csv.split(lineEnding);
+  
+  var headers=lines[0].split(separator);
 
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
-    var currentline = lines[i].split(",");
+    var currentline = lines[i].split(separator);
     if (currentline != '') {
       for (var j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentline[j];
-      }
-      result.push(obj);
+        if (currentline[j]) {
+			obj[headers[j]] = currentline[j].replace(",",".");
+		} else {
+			obj[headers[j]] = currentline[j];
+		}
+	  }
+	  result.push(obj);
     }
   }
   return result;
@@ -84,8 +137,11 @@ var openFile = function (event) {
   var input = event.target;
   var reader = new FileReader();
 
-  reader.onload = function () {    
-    hot.loadData(csv2JSON(reader.result));
+  reader.onload = function () {
+	console.log(csv2headers(reader.result));
+	hotSettings.data = csv2JSON(reader.result);
+	hotSettings.colHeaders = csv2headers(reader.result);
+    hot = new Handsontable(hotElement, hotSettings);
   };
   reader.readAsText(input.files[0]);
 };
