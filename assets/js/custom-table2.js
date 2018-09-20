@@ -1,4 +1,15 @@
-hot2Data = [];
+function activateUploadButton(size) {
+	console.log(size);
+	if(size > 0) {
+		$("#uploadTable2Label").removeClass("disabled");
+		$("#uploadTable2").prop("disabled", false);
+	} else {
+		$("#uploadTable2Label").addClass("disabled");
+		$("#uploadTable2").prop("disabled", true);
+	}
+}
+
+var hot2Data = [];
 var hot2Element = document.querySelector('#hot2');
 var hot2ElementContainer = hot2Element.parentNode;
 
@@ -84,7 +95,7 @@ var hot2 = new Handsontable(hot2Element, hot2Settings);
 $('#uploadTable2').click(function (e) {
   hot2.validateCells(function (valid) {
     if (valid) {
-      dataObject = hot2.getSourceData();
+      var dataObject = hot2.getSourceData();
       if (dataObject.length === 0) {
         alert('Please fill the table first');
       } else {
@@ -116,8 +127,11 @@ var openFile2 = function (event) {
   reader.onload = function () {
     hot2.destroy();
     hot2Settings.colHeaders = csv2headers(reader.result);
-    hot2Settings.data =csv2JSON(reader.result);
+	var size = reader.result.length;
+    hot2Settings.data = csv2JSON(reader.result);
     hot2 = new Handsontable(hot2Element, hot2Settings);
+	console.log(size);
+	activateUploadButton(size);
   };
   reader.readAsText(input.files[0]);
 };

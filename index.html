@@ -148,12 +148,12 @@
 							<div class="btn-toolbar mb-2 mb-md-0">
 								<div class="btn-group mr-2">
 									<label for="openfile2" class="btn btn-sm btn-outline-secondary custom-openfile">
-										<i class="icon ion-document"></i> Open file from disk
+										<i class="icon ion-document"></i> Import
 									</label>
 									<input id="openfile2" type='file' accept='text/csv' onchange='openFile2(event)'>
-									<input type="submit" id="uploadTable2">
-									<label for="uploadTable2" class="btn btn-sm btn-outline-secondary custom-openfile">
-										<i class="icon ion-upload"></i> Upload table to server
+									<input type="submit" id="uploadTable2" disabled>
+									<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled" >
+										<i class="icon ion-upload" ></i> Upload
 									</label>
 								</div>
 
