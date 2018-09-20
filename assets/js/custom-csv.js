@@ -59,13 +59,13 @@ function export2CSVFile(headers, items, fileTitle) {
   if (headers) {
     items.unshift(headers);
   }
-
+  console.log(items);
   // Convert Object to JSON
   var jsonObject = JSON.stringify(items);
 
   // Convert JSON to CSV
   var csv = this.JSON2csv(jsonObject);
-
+  console.log(jsonObject);
   // Export CSV to file
   var exportedFilename = fileTitle + '.csv' || 'export.csv';
   var blob = new Blob([csv], {

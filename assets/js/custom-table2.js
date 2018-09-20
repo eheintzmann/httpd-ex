@@ -56,7 +56,7 @@ var hot2Settings = {
   //height: 487,
   //maxRows: 22,
   contextMenu: true,
-  //rowHeaders: true,
+  rowHeaders: true,
   /*colHeaders: [
     'Year',
     'Ford',
@@ -96,6 +96,7 @@ $('#uploadTable2').click(function (e) {
   hot2.validateCells(function (valid) {
     if (valid) {
       var dataObject = hot2.getSourceData();
+	  console.log(dataObject);
       if (dataObject.length === 0) {
         alert('Please fill the table first');
       } else {
@@ -106,12 +107,14 @@ $('#uploadTable2').click(function (e) {
             "recup": dataObject
           },
           success: function (data, textStatus, jqXHR) {
+			  console.log(data);
             export2CSVFile(null, data, "export");
           },
           error: function (jqXHR, textStatus, errorThrown) {
             alert(textStatus)
           },
-          dataType: "json"
+          dataType: "json",
+		  timeout: 100000
         });
       }
     } else {
@@ -126,12 +129,21 @@ var openFile2 = function (event) {
 
   reader.onload = function () {
     hot2.destroy();
-    hot2Settings.colHeaders = csv2headers(reader.result);
+	var workbook = XLSX.read(reader.result, {
+        type: 'binary'
+      });
 	var size = reader.result.length;
-    hot2Settings.data = csv2JSON(reader.result);
+	var jsonxls = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]],{header:1});
+    hot2Settings.colHeaders = jsonxls[0];
+	var jsonxls2 = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]],{ raw: false, defval: ""});
+	//delete jsonxls[0];
+	hot2Settings.data = jsonxls2;
+
     hot2 = new Handsontable(hot2Element, hot2Settings);
-	console.log(size);
 	activateUploadButton(size);
   };
-  reader.readAsText(input.files[0]);
+  reader.onerror = function(err) {
+      alert('Input error');
+    };
+  reader.readAsBinaryString(input.files[0]);
 };
