@@ -9,6 +9,9 @@
 	<!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
+	<!-- Ionicons Fonts -->
+	<link rel="stylesheet" href="assets/css/ionicons.min.css">
+
 	<!-- Handsontable Community Edition CSS -->
 	<link rel="stylesheet" href="assets/css/handsontable.full.min.css">
 
@@ -18,13 +21,13 @@
 
 <body>
 	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">DX</a>
-		<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+		<a class="navbar-brand col-sm-12 col-md-12 mr-0" href="#">DX</a>
+		<!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
 		<ul class="navbar-nav px-3">
 			<li class="nav-item text-nowrap">
 				<a class="nav-link" href="#">Sign out</a>
 			</li>
-		</ul>
+		</ul>-->
 	</nav>
 
 	<div class="container-fluid">
@@ -112,7 +115,8 @@
 						 aria-selected="true">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="false">Table</a>
+						<a class="nav-link" id="table2-tab" data-toggle="tab" href="#table2" role="tab" aria-controls="table2"
+						 aria-selected="false">Table 2</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv" aria-selected="false">CSV</a>
@@ -138,12 +142,24 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane fade text-center" id="table" role="tabpanel" aria-labelledby="table-tab">
-						<h2>Table</h2>
-						<table id="hot"></table>
-						<br />
-						<button id="start"> Start</button>
+					<div class="tab-pane fade text-center" id="table2" role="tabpanel" aria-labelledby="table-tab">
+						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+							<h1 class="h2">Table 2</h1>
+							<div class="btn-toolbar mb-2 mb-md-0">
+								<div class="btn-group mr-2">
+									<label for="openfile2" class="btn btn-sm btn-outline-secondary custom-openfile">
+										<i class="icon ion-document"></i> Open file from disk
+									</label>
+									<input id="openfile2" type='file' accept='text/csv' onchange='openFile2(event)'>
+									<input type="submit" id="uploadTable2">
+									<label for="uploadTable2" class="btn btn-sm btn-outline-secondary custom-openfile">
+										<i class="icon ion-upload"></i> Upload table to server
+									</label>
+								</div>
 
+							</div>
+						</div>
+						<table id="hot2"></table>
 					</div>
 					<div class="tab-pane fade" id="csv" role="tabpanel" aria-labelledby="csv-tab">
 						<h2>Upload CSV file</h2>
@@ -154,15 +170,19 @@
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras est ligula, iaculis ut odio at, consectetur
 							iaculis
 							orci. Morbi at leo sed mi varius rutrum non nec diam. Sed egestas molestie enim. Nullam rutrum turpis gravida
-							lectus consectetur dignissim. Curabitur dictum placerat ipsum, ac bibendum turpis dictum eget. Vestibulum lorem
+							lectus consectetur dignissim. Curabitur dictum placerat ipsum, ac bibendum turpis dictum eget. Vestibulum
+							lorem
 							turpis, condimentum quis molestie sed, egestas ac justo. Nunc ultricies augue lorem, sit amet interdum nulla
-							ullamcorper vitae. In fermentum ullamcorper ante vitae volutpat. Morbi aliquam viverra elit ut vulputate. Donec
+							ullamcorper vitae. In fermentum ullamcorper ante vitae volutpat. Morbi aliquam viverra elit ut vulputate.
+							Donec
 							euismod eros at ultricies lacinia. Sed scelerisque, nunc ac malesuada vulputate, dui elit efficitur quam, sit
 							amet ullamcorper leo eros at ligula.
 						</p>
 						<p>
-							Morbi faucibus ligula a ligula efficitur auctor. Vestibulum finibus in sapien quis mattis. Ut purus ex, aliquet
-							id fermentum eu, commodo et enim. Vestibulum non leo suscipit, rhoncus ante sed, auctor eros. Etiam purus neque,
+							Morbi faucibus ligula a ligula efficitur auctor. Vestibulum finibus in sapien quis mattis. Ut purus ex,
+							aliquet
+							id fermentum eu, commodo et enim. Vestibulum non leo suscipit, rhoncus ante sed, auctor eros. Etiam purus
+							neque,
 							elementum eget nulla at, rutrum rutrum nunc. Fusce condimentum rutrum ullamcorper. Fusce quis urna dignissim,
 							convallis odio eget, pretium est.
 						</p>
@@ -173,15 +193,18 @@
 							ligula vestibulum ac. Fusce tristique laoreet lorem ut semper. Cras cursus vestibulum mattis. Pellentesque
 							vulputate tellus vel ligula auctor, a euismod massa dictum. In eget viverra purus, elementum sodales nulla.
 							Fusce
-							volutpat neque luctus scelerisque bibendum. Donec malesuada sit amet eros vitae consectetur. Morbi porta turpis
+							volutpat neque luctus scelerisque bibendum. Donec malesuada sit amet eros vitae consectetur. Morbi porta
+							turpis
 							quis sem lobortis, tempor congue massa feugiat.
 						</p>
 						<p>
 							Donec lacinia, dolor in vulputate ornare, urna nisl porta elit, elementum luctus nisi nunc quis libero. Donec
-							fringilla turpis at ullamcorper congue. Ut tristique nec diam ut convallis. Suspendisse dictum lectus eleifend,
+							fringilla turpis at ullamcorper congue. Ut tristique nec diam ut convallis. Suspendisse dictum lectus
+							eleifend,
 							efficitur lacus quis, consequat sapien. Donec at pellentesque ipsum. Vestibulum tristique semper ipsum, a
 							ultrices augue luctus et. Etiam tempor ante lectus, id bibendum urna rutrum nec. Nunc finibus massa sit amet
-							blandit rhoncus. Aliquam ultrices est semper, tempor lectus ut, egestas nisl. Fusce porta metus nisi, eu gravida
+							blandit rhoncus. Aliquam ultrices est semper, tempor lectus ut, egestas nisl. Fusce porta metus nisi, eu
+							gravida
 							dolor tincidunt non. Suspendisse eu felis pellentesque, scelerisque risus ac, venenatis felis. Orci varius
 							natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
 						</p>
@@ -190,7 +213,8 @@
 							sapien rhoncus, congue velit sed, malesuada arcu. Ut tempor arcu vitae orci interdum mollis. Mauris luctus
 							tempor
 							diam, in imperdiet ligula elementum in. Nunc viverra mauris quis eros fringilla ultricies. Morbi velit ex,
-							tincidunt eget dictum eu, luctus ac justo. Phasellus nec consectetur lacus. Donec fermentum hendrerit massa. Ut
+							tincidunt eget dictum eu, luctus ac justo. Phasellus nec consectetur lacus. Donec fermentum hendrerit massa.
+							Ut
 							elit leo, fermentum id elementum malesuada, semper at metus. Vestibulum congue mollis pellentesque. Aenean
 							sollicitudin metus velit, eu hendrerit orci feugiat id. Etiam molestie pellentesque velit, id tincidunt nulla
 							viverra eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
@@ -213,7 +237,7 @@
 	<script src="assets/js/handsontable.full.min.js"></script>
 
 	<!-- Custom Javascript -->
-	<script src="assets/js/custom-table.js"></script>
+	<script src="assets/js/custom-table2.js"></script>
 	<script src="assets/js/custom-csv.js"></script>
 
 </body>
