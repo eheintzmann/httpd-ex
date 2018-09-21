@@ -191,13 +191,13 @@ var hot3Settings = {
   data: hot3Data,
   stretchH: 'all',
   width: function () {
-    var element = document.getElementById('table2');
+    var element = document.getElementById('tables');
     var positionInfo = element.getBoundingClientRect();
     return (positionInfo.width);
   },
   autoWrapRow: true,
   height: function () {
-    var element = document.getElementById('table2');
+    var element = document.getElementById('tables');
     var positionInfo = element.getBoundingClientRect();
     return (positionInfo.height);
   },
@@ -240,7 +240,36 @@ $('#uploadTable2').click(function (e) {
             $('#loader2').addClass('loader');
           },
           success: function (data, textStatus, jqXHR) {
-            export2Excel(data, 'export');
+            export2Excel(data, 'export2');
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus)
+          },
+          complete: function () {
+            $('#loader2').removeClass('loader');
+          },
+          dataType: 'json',
+          timeout: 100000
+        });
+      } else {
+        alert('Check your data');
+      }
+    }
+  });
+  hot3.validateCells(function (valid) {
+  if ((hot2.countCols() !== 0) && (hot2.countRows() !== 0)  && (hot3.countCols() !== 0) && (hot2.countRows() !== 0) ) {
+      if (valid) {
+        $.ajax({
+          type: 'POST',
+          url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/',
+          data: {
+            "recup": hot3.getSourceData()
+          },
+          beforeSend: function () {
+            $('#loader2').addClass('loader');
+          },
+          success: function (data, textStatus, jqXHR) {
+            export2Excel(data, 'export3');
           },
           error: function (jqXHR, textStatus, errorThrown) {
             alert(textStatus)
