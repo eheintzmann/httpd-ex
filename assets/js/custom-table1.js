@@ -1,4 +1,16 @@
 /**
+* export JSON to excel file
+* @param {Object} items - JSON Object to convert
+* @param {string} fileTitle - Title of the file to export
+*/
+function export2Excel(items, fileTitle) {
+  var workbook = XLSX.utils.book_new();
+  var sheet = XLSX.utils.json_to_sheet(items);
+  XLSX.utils.book_append_sheet(workbook, sheet, "main");
+  XLSX.writeFile(workbook, fileTitle +".xlsx");
+}
+
+/**
  * Read file
  *
  * @param {Object} event - Event Object
@@ -32,7 +44,7 @@ var openFile1 = function (event) {
     hot1 = new Handsontable(hot1Element, hot1Settings);
 
     // Activate Send Button
-    toggleUploadButton(hot1);
+    toggleUploadButton1(hot1);
   };
   reader.onerror = function (err) {
     alert('Input error');
@@ -45,8 +57,8 @@ var openFile1 = function (event) {
  * 
  * @param {Object} hot1 - Handsontable Object
  */
-function toggleUploadButton(hot1) {
-  if ((hot1.countCols() !== 0) && (hot1.countRows() !== 0)) {
+function toggleUploadButton1(h) {
+  if ( (h) && (h.countCols() !== 0) && (h.countRows() !== 0)) {
     $('#uploadTable1Label').removeClass('disabled').prop('disabled', false).tooltip('enable');
     $('#uploadTable1').prop('disabled', false);
   } else {
@@ -137,7 +149,7 @@ var hot1Settings = {
 var hot1 = new Handsontable(hot1Element, hot1Settings);
 
 // Desactivate Send Button
-toggleUploadButton(hot1);
+toggleUploadButton1(hot1);
 
 // Ajax call when "Send" button is clicked
 $('#uploadTable1').click(function (e) {
@@ -154,11 +166,14 @@ $('#uploadTable1').click(function (e) {
             $('#loader1').addClass('loader');
           },
           success: function (data, textStatus, jqXHR) {
-            console.log(data);
-            export2CSVFile(null, data, 'export');
+			console.log(data);
+			$('#loader1').removeClass('loader');  
+            export2Excel(data, 'export');
+
           },
           error: function (jqXHR, textStatus, errorThrown) {
-            alert(textStatus)
+            alert(textStatus);
+            $('#loader1').removeClass('loader');
           },
           complete: function () {
             $('#loader1').removeClass('loader');

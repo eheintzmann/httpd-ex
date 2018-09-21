@@ -119,7 +119,7 @@
 						 aria-selected="false">Market Share Constraints</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv" aria-selected="false">Allocation</a>
+						<a class="nav-link disabled" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv" aria-selected="false">Allocation</a>
 					</li>					
 				</ul>
 				<div class="tab-content">
@@ -136,13 +136,13 @@
 									<input type="submit" id="uploadTable1" disabled>
 									<label for="uploadTable1" id="uploadTable1Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
 									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
-										<i class="icon ion-upload" accept=".xslx,.csv" disabled></i> Send
+										<i class="icon ion-upload" disabled></i> Send
 									</label>
 								</div>
 							</div>
 						</div>
 						<div class="text-center">
-							<div id="loader2" class="d-inline-block"></div>
+							<div id="loader1" class="d-inline-block"></div>
 						</div>
 						<div id="hot1"></div>
 					</div>
@@ -155,8 +155,8 @@
 									 data-placement="left" title="Open Excel file (XLSX, CSV...)">
 										<i class="icon ion-document"></i> Open
 									</label>
-									<input id="openfile2" type="file" accept="text/csv" onchange='openFile2(event)' multiple>
-									<input type="submit" accept="application/msexcel" id="uploadTable2" disabled>
+									<input id="openfile2" type="file" accept=".xslx,.csv" onchange='openFile2(event)' multiple>
+									<input type="submit" id="uploadTable2" disabled>
 									<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
 									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
 										<i class="icon ion-upload" disabled></i> Send
@@ -167,8 +167,10 @@
 						<div class="text-center">
 							<div id="loader2" class="d-inline-block"></div>
 						</div>
-						<div id="hot2"></div>
-						<div id="hot3"></div>
+						<div id="tables">
+							<div id="hot2"></div>
+							<div id="hot3"></div>
+						</div>							
 					</div>					
 				</div>
 			</main>

@@ -1,10 +1,3 @@
-function export2Excel(items, fileTitle) {
-  var workbook = XLSX.utils.book_new();
-  var sheet = XLSX.utils.json_to_sheet(items);
-  XLSX.utils.book_append_sheet(workbook, sheet, "main");
-  XLSX.writeFile(workbook, fileTitle +".xlsx");
-}
-
 /**
  * Read file
  *
@@ -12,8 +5,9 @@ function export2Excel(items, fileTitle) {
  */
 var openFile2 = function (event) {
   var input = event.target;
+  
+  if (input.files[0]) {
   var reader1 = new FileReader();
-  var reader2 = new FileReader();
 
   reader1.onload = function () {
     // Delete current HandsOnTable table
@@ -40,9 +34,22 @@ var openFile2 = function (event) {
     hot2 = new Handsontable(hot2Element, hot2Settings);
 
     // Activate Send Button
-    toggleUploadButton(hot2);
+    toggleUploadButton(hot2, hot3);
+	$('#loader2').removeClass('loader');
+  };
+  reader1.onloadstart = function () {
+    $('#loader2').addClass('loader');
+
+  };
+   reader1.onerror = function (err) {
+    alert('Input error');
+  	$('#loader2').removeClass('loader');
   };
   
+  reader1.readAsBinaryString(input.files[0]);
+  }
+  if (input.files[1]) {
+  var reader2 = new FileReader();
   reader2.onload = function () {
     // Delete current HandsOnTable table
     hot3.destroy();
@@ -68,17 +75,13 @@ var openFile2 = function (event) {
     hot3 = new Handsontable(hot3Element, hot3Settings);
 
     // Activate Send Button
-    //toggleUploadButton(hot3);
-  };
-  
-  reader1.onerror = function (err) {
-    alert('Input error');
+    toggleUploadButton(hot2, hot3);
   };
   reader2.onerror = function (err) {
     alert('Input error');
   };
-  reader1.readAsBinaryString(input.files[0]);
   reader2.readAsBinaryString(input.files[1]);
+   }
 
 };
 
@@ -88,8 +91,8 @@ var openFile2 = function (event) {
  * @param {Object} hot2 - Handsontable Object
  * @param {Object} hot3 - Handsontable Object
  */
-function toggleUploadButton(hot2, hot3) {
-  if ((hot2.countCols() !== 0) && (hot2.countRows() !== 0)) {
+function toggleUploadButton(h1, h2) {
+  if ( (h1) && (h2) && (h1.countCols() !== 0) && (h1.countRows() !== 0) && (h2.countCols() !== 0) && (h2.countRows() !== 0)) {
     $('#uploadTable2Label').removeClass('disabled').prop('disabled', false).tooltip('enable');
     $('#uploadTable2').prop('disabled', false);
   } else {
@@ -151,13 +154,13 @@ var hot2Settings = {
   ],*/
   stretchH: 'all',
   width: function () {
-    var element = document.getElementById('table2');
+    var element = document.getElementById('tables');
     var positionInfo = element.getBoundingClientRect();
     return (positionInfo.width);
   },
   autoWrapRow: true,
   height: function () {
-    var element = document.getElementById('table2');
+    var element = document.getElementById('tables');
     var positionInfo = element.getBoundingClientRect();
     return (positionInfo.height);
   },
@@ -225,7 +228,7 @@ toggleUploadButton(hot2, hot3);
 // Ajax call when "Send" button is clicked
 $('#uploadTable2').click(function (e) {
   hot2.validateCells(function (valid) {
-    if ((hot2.countCols() !== 0) && (hot2.countRows() !== 0)) {
+    if ((hot2.countCols() !== 0) && (hot2.countRows() !== 0)  && (hot3.countCols() !== 0) && (hot2.countRows() !== 0) ) {
       if (valid) {
         $.ajax({
           type: 'POST',
@@ -237,7 +240,6 @@ $('#uploadTable2').click(function (e) {
             $('#loader2').addClass('loader');
           },
           success: function (data, textStatus, jqXHR) {
-            console.log(data);
             export2Excel(data, 'export');
           },
           error: function (jqXHR, textStatus, errorThrown) {

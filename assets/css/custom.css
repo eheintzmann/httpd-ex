@@ -147,9 +147,12 @@ label i.icon {
 }
 
 /*
-/ Handsontable Parent container
+/ Handsontable
 */
-/*#table1,
-#table2 {
-  height: calc(100vh - 210px);
-}*/
+#table1,
+#tables {
+  height: calc(50vh);
+}
+#hot3 {
+	margin-top: 20px;
+}
