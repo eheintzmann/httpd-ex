@@ -1,3 +1,10 @@
+function export2Excel(items, fileTitle) {
+  var workbook = XLSX.utils.book_new();
+  var sheet = XLSX.utils.json_to_sheet(items);
+  XLSX.utils.book_append_sheet(workbook, sheet, "main");
+  XLSX.writeFile(workbook, fileTitle +".xlsx");
+}
+
 /**
  * Read file
  *
@@ -5,14 +12,15 @@
  */
 var openFile2 = function (event) {
   var input = event.target;
-  var reader = new FileReader();
+  var reader1 = new FileReader();
+  var reader2 = new FileReader();
 
-  reader.onload = function () {
+  reader1.onload = function () {
     // Delete current HandsOnTable table
     hot2.destroy();
 
-    // Read Excel file
-    var workbook = XLSX.read(reader.result, {
+    // Read Excel fileaccept="application/vnd.ms-excel"
+    var workbook = XLSX.read(reader1.result, {
       type: 'binary'
     });
 
@@ -34,18 +42,53 @@ var openFile2 = function (event) {
     // Activate Send Button
     toggleUploadButton(hot2);
   };
-  reader.onerror = function (err) {
+  
+  reader2.onload = function () {
+    // Delete current HandsOnTable table
+    hot3.destroy();
+
+    // Read Excel file
+    var workbook = XLSX.read(reader2.result, {
+      type: 'binary'
+    });
+
+    // Table Headers
+    var json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
+      header: 1,
+      defval: ''
+    });
+    hot3Settings.colHeaders = json[0];
+
+    // Table Body
+    var jsonxls2 = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
+      raw: false,
+      defval: ''
+    });
+    hot3Settings.data = jsonxls2;
+    hot3 = new Handsontable(hot3Element, hot3Settings);
+
+    // Activate Send Button
+    //toggleUploadButton(hot3);
+  };
+  
+  reader1.onerror = function (err) {
     alert('Input error');
   };
-  reader.readAsBinaryString(input.files[0]);
+  reader2.onerror = function (err) {
+    alert('Input error');
+  };
+  reader1.readAsBinaryString(input.files[0]);
+  reader2.readAsBinaryString(input.files[1]);
+
 };
 
 /**
  * Activate or Desactivate Send Button
  * 
  * @param {Object} hot2 - Handsontable Object
+ * @param {Object} hot3 - Handsontable Object
  */
-function toggleUploadButton(hot2) {
+function toggleUploadButton(hot2, hot3) {
   if ((hot2.countCols() !== 0) && (hot2.countRows() !== 0)) {
     $('#uploadTable2Label').removeClass('disabled').prop('disabled', false).tooltip('enable');
     $('#uploadTable2').prop('disabled', false);
@@ -58,8 +101,15 @@ function toggleUploadButton(hot2) {
 /** @type {Object[]} */
 var hot2Data = [];
 
+/** @type {Object[]} */
+var hot3Data = [];
+
+
 /** @type {Element} */
 var hot2Element = document.querySelector('#hot2');
+
+/** @type {Element} */
+var hot3Element = document.querySelector('#hot3');
 
 /** @type {Object} */
 var hot2Settings = {
@@ -133,11 +183,44 @@ var hot2Settings = {
   //minSpareRows: 1,
 }
 
+/** @type {Object} */
+var hot3Settings = {
+  data: hot3Data,
+  stretchH: 'all',
+  width: function () {
+    var element = document.getElementById('table2');
+    var positionInfo = element.getBoundingClientRect();
+    return (positionInfo.width);
+  },
+  autoWrapRow: true,
+  height: function () {
+    var element = document.getElementById('table2');
+    var positionInfo = element.getBoundingClientRect();
+    return (positionInfo.height);
+  },
+  contextMenu: true,
+  rowHeaders: true,
+  manualRowResize: true,
+  manualColumnResize: true,
+  columnSorting: true,
+  sortIndicator: true,
+  /*autoColumnSize: {
+    useHeaders: true,
+  },*/
+  //colWidths: ,
+  //minRows: 1,
+  //minSpareRows: 1,
+}
+
 /** @type {Handsontable} */
 var hot2 = new Handsontable(hot2Element, hot2Settings);
 
+/** @type {Handsontable} */
+var hot3 = new Handsontable(hot3Element, hot3Settings);
+
+
 // Desactivate Send Button
-toggleUploadButton(hot2);
+toggleUploadButton(hot2, hot3);
 
 // Ajax call when "Send" button is clicked
 $('#uploadTable2').click(function (e) {
@@ -155,7 +238,7 @@ $('#uploadTable2').click(function (e) {
           },
           success: function (data, textStatus, jqXHR) {
             console.log(data);
-            export2CSVFile(null, data, 'export');
+            export2Excel(data, 'export');
           },
           error: function (jqXHR, textStatus, errorThrown) {
             alert(textStatus)

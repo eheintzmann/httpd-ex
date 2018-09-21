@@ -111,48 +111,52 @@
 			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item">
-						<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-						 aria-selected="true">Home</a>
+						<a class="nav-link active" id="table1-tab" data-toggle="tab" href="#table1" role="tab" aria-controls="table1"
+						 aria-selected="true">ConBid needs</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" id="table2-tab" data-toggle="tab" href="#table2" role="tab" aria-controls="table2"
-						 aria-selected="false">Table 2</a>
+						 aria-selected="false">Market Share Constraints</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv" aria-selected="false">CSV</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings"
-						 aria-selected="false">Settings</a>
-					</li>
+						<a class="nav-link" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv" aria-selected="false">Allocation</a>
+					</li>					
 				</ul>
 				<div class="tab-content">
-					<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+					<div class="tab-pane fade show active text-center" id="table1" role="tabpanel" aria-labelledby="table1-tab">
 						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-							<h1 class="h2">Dashboard</h1>
+							<h1 class="h2">ConBid needs</h1>
 							<div class="btn-toolbar mb-2 mb-md-0">
 								<div class="btn-group mr-2">
-									<button class="btn btn-sm btn-outline-secondary">Share</button>
-									<button class="btn btn-sm btn-outline-secondary">Export</button>
+									<label for="openfile1" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
+									 data-placement="left" title="Open Excel file (XLSX, CSV...)">
+										<i class="icon ion-document"></i> Open
+									</label>
+									<input id="openfile1" type="file" accept=".xlsx,.csv" onchange='openFile1(event)'>
+									<input type="submit" id="uploadTable1" disabled>
+									<label for="uploadTable1" id="uploadTable1Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
+									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
+										<i class="icon ion-upload" accept=".xslx,.csv" disabled></i> Send
+									</label>
 								</div>
-								<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-									<span data-feather="calendar"></span>
-									This week
-								</button>
 							</div>
 						</div>
+						<div class="text-center">
+							<div id="loader2" class="d-inline-block"></div>
+						</div>
+						<div id="hot1"></div>
 					</div>
-					<div class="tab-pane fade text-center" id="table2" role="tabpanel" aria-labelledby="table-tab">
+					<div class="tab-pane fade text-center" id="table2" role="tabpanel" aria-labelledby="table2-tab">
 						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-							<h1 class="h2">Table 2</h1>
+							<h1 class="h2">Market Share Constraints</h1>
 							<div class="btn-toolbar mb-2 mb-md-0">
 								<div class="btn-group mr-2">
 									<label for="openfile2" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
 									 data-placement="left" title="Open Excel file (XLSX, CSV...)">
 										<i class="icon ion-document"></i> Open
 									</label>
-									<input id="openfile2" type="file" accept="text/csv" onchange='openFile2(event)'>
-									<input type="submit" id="uploadTable2" disabled>
+									<input id="openfile2" type="file" accept="text/csv" onchange='openFile2(event)' multiple>
+									<input type="submit" accept="application/msexcel" id="uploadTable2" disabled>
 									<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
 									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
 										<i class="icon ion-upload" disabled></i> Send
@@ -164,66 +168,8 @@
 							<div id="loader2" class="d-inline-block"></div>
 						</div>
 						<div id="hot2"></div>
-					</div>
-					<div class="tab-pane fade" id="csv" role="tabpanel" aria-labelledby="csv-tab">
-						<h2>Upload CSV file</h2>
-						<input type='file' accept='text/csv' onchange='openFile(event)'>
-					</div>
-					<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras est ligula, iaculis ut odio at, consectetur
-							iaculis
-							orci. Morbi at leo sed mi varius rutrum non nec diam. Sed egestas molestie enim. Nullam rutrum turpis gravida
-							lectus consectetur dignissim. Curabitur dictum placerat ipsum, ac bibendum turpis dictum eget. Vestibulum
-							lorem
-							turpis, condimentum quis molestie sed, egestas ac justo. Nunc ultricies augue lorem, sit amet interdum nulla
-							ullamcorper vitae. In fermentum ullamcorper ante vitae volutpat. Morbi aliquam viverra elit ut vulputate.
-							Donec
-							euismod eros at ultricies lacinia. Sed scelerisque, nunc ac malesuada vulputate, dui elit efficitur quam, sit
-							amet ullamcorper leo eros at ligula.
-						</p>
-						<p>
-							Morbi faucibus ligula a ligula efficitur auctor. Vestibulum finibus in sapien quis mattis. Ut purus ex,
-							aliquet
-							id fermentum eu, commodo et enim. Vestibulum non leo suscipit, rhoncus ante sed, auctor eros. Etiam purus
-							neque,
-							elementum eget nulla at, rutrum rutrum nunc. Fusce condimentum rutrum ullamcorper. Fusce quis urna dignissim,
-							convallis odio eget, pretium est.
-						</p>
-						<p>
-
-							Phasellus ac rhoncus velit. Nullam gravida lorem quis lobortis varius. Etiam laoreet augue dolor, non
-							condimentum
-							ligula vestibulum ac. Fusce tristique laoreet lorem ut semper. Cras cursus vestibulum mattis. Pellentesque
-							vulputate tellus vel ligula auctor, a euismod massa dictum. In eget viverra purus, elementum sodales nulla.
-							Fusce
-							volutpat neque luctus scelerisque bibendum. Donec malesuada sit amet eros vitae consectetur. Morbi porta
-							turpis
-							quis sem lobortis, tempor congue massa feugiat.
-						</p>
-						<p>
-							Donec lacinia, dolor in vulputate ornare, urna nisl porta elit, elementum luctus nisi nunc quis libero. Donec
-							fringilla turpis at ullamcorper congue. Ut tristique nec diam ut convallis. Suspendisse dictum lectus
-							eleifend,
-							efficitur lacus quis, consequat sapien. Donec at pellentesque ipsum. Vestibulum tristique semper ipsum, a
-							ultrices augue luctus et. Etiam tempor ante lectus, id bibendum urna rutrum nec. Nunc finibus massa sit amet
-							blandit rhoncus. Aliquam ultrices est semper, tempor lectus ut, egestas nisl. Fusce porta metus nisi, eu
-							gravida
-							dolor tincidunt non. Suspendisse eu felis pellentesque, scelerisque risus ac, venenatis felis. Orci varius
-							natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-						</p>
-						<p>
-							Vestibulum libero ligula, hendrerit quis tempus sit amet, ultrices in elit. Mauris at interdum purus. Duis ut
-							sapien rhoncus, congue velit sed, malesuada arcu. Ut tempor arcu vitae orci interdum mollis. Mauris luctus
-							tempor
-							diam, in imperdiet ligula elementum in. Nunc viverra mauris quis eros fringilla ultricies. Morbi velit ex,
-							tincidunt eget dictum eu, luctus ac justo. Phasellus nec consectetur lacus. Donec fermentum hendrerit massa.
-							Ut
-							elit leo, fermentum id elementum malesuada, semper at metus. Vestibulum congue mollis pellentesque. Aenean
-							sollicitudin metus velit, eu hendrerit orci feugiat id. Etiam molestie pellentesque velit, id tincidunt nulla
-							viverra eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-						</p>
-					</div>
+						<div id="hot3"></div>
+					</div>					
 				</div>
 			</main>
 		</div>
@@ -244,6 +190,7 @@
 	<script src="assets/js/xlsx.full.min.js"></script>
 
 	<!-- Custom Javascript -->
+	<script src="assets/js/custom-table1.js"></script>
 	<script src="assets/js/custom-table2.js"></script>
 	<script src="assets/js/custom-csv.js"></script>
 

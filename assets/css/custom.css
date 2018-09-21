@@ -149,6 +149,7 @@ label i.icon {
 /*
 / Handsontable Parent container
 */
+/*#table1,
 #table2 {
   height: calc(100vh - 210px);
-}
+}*/
