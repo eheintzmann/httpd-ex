@@ -1,18 +1,67 @@
-function activateUploadButton(size) {
-	console.log(size);
-	if(size > 0) {
-		$("#uploadTable2Label").removeClass("disabled");
-		$("#uploadTable2").prop("disabled", false);
-	} else {
-		$("#uploadTable2Label").addClass("disabled");
-		$("#uploadTable2").prop("disabled", true);
-	}
+/**
+ * Read file
+ *
+ * @param {Object} event - Event Object
+ */
+var openFile2 = function (event) {
+  var input = event.target;
+  var reader = new FileReader();
+
+  reader.onload = function () {
+    // Delete current HandsOnTable table
+    hot2.destroy();
+
+    // Read Excel file
+    var workbook = XLSX.read(reader.result, {
+      type: 'binary'
+    });
+
+    // Table Headers
+    var json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
+      header: 1,
+      defval: ''
+    });
+    hot2Settings.colHeaders = json[0];
+
+    // Table Body
+    var jsonxls2 = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
+      raw: false,
+      defval: ''
+    });
+    hot2Settings.data = jsonxls2;
+    hot2 = new Handsontable(hot2Element, hot2Settings);
+
+    // Activate Send Button
+    toggleUploadButton(hot2);
+  };
+  reader.onerror = function (err) {
+    alert('Input error');
+  };
+  reader.readAsBinaryString(input.files[0]);
+};
+
+/**
+ * Activate or Desactivate Send Button
+ * 
+ * @param {Object} hot2 - Handsontable Object
+ */
+function toggleUploadButton(hot2) {
+  if ((hot2.countCols() !== 0) && (hot2.countRows() !== 0)) {
+    $('#uploadTable2Label').removeClass('disabled').prop('disabled', false).tooltip('enable');
+    $('#uploadTable2').prop('disabled', false);
+  } else {
+    $('#uploadTable2Label').addClass('disabled').prop('disabled', true).tooltip('disable');
+    $('#uploadTable2').prop('disabled', true);
+  }
 }
 
+/** @type {Object[]} */
 var hot2Data = [];
-var hot2Element = document.querySelector('#hot2');
-var hot2ElementContainer = hot2Element.parentNode;
 
+/** @type {Element} */
+var hot2Element = document.querySelector('#hot2');
+
+/** @type {Object} */
 var hot2Settings = {
   data: hot2Data,
   /*columns: [{
@@ -51,9 +100,17 @@ var hot2Settings = {
     },
   ],*/
   stretchH: 'all',
-  //width: 806,
+  width: function () {
+    var element = document.getElementById('table2');
+    var positionInfo = element.getBoundingClientRect();
+    return (positionInfo.width);
+  },
   autoWrapRow: true,
-  //height: 487,
+  height: function () {
+    var element = document.getElementById('table2');
+    var positionInfo = element.getBoundingClientRect();
+    return (positionInfo.height);
+  },
   //maxRows: 22,
   contextMenu: true,
   rowHeaders: true,
@@ -68,82 +125,50 @@ var hot2Settings = {
   manualColumnResize: true,
   columnSorting: true,
   sortIndicator: true,
-  autoColumnSize: {
+  /*autoColumnSize: {
     useHeaders: true,
-  },
-  //colWidths: ',
-  minRows: 1,
-  //minSpareRows: 1,  
+  },*/
+  //colWidths: ,
+  //minRows: 1,
+  //minSpareRows: 1,
 }
 
+/** @type {Handsontable} */
 var hot2 = new Handsontable(hot2Element, hot2Settings);
-//const plugin = hot2.getPlugin('autoColumnSize');
 
-/*Handsontable.hooks.add('beforeRender', function(changes) {
-	console.log('Render detected');
-	plugin.clearCache();
-}, hot2);
-*/
+// Desactivate Send Button
+toggleUploadButton(hot2);
 
-// Fix to display table in tabs
-/*$('#table-tab').on('shown.bs.tab', function (e) {
-  if (!(typeof hot2 === 'undefined')) {
-    hot2.render();
-  }
-})*/
-
+// Ajax call when "Send" button is clicked
 $('#uploadTable2').click(function (e) {
   hot2.validateCells(function (valid) {
-    if (valid) {
-      var dataObject = hot2.getSourceData();
-	  console.log(dataObject);
-      if (dataObject.length === 0) {
-        alert('Please fill the table first');
-      } else {
+    if ((hot2.countCols() !== 0) && (hot2.countRows() !== 0)) {
+      if (valid) {
         $.ajax({
-          type: "POST",
-          url: "http://php-back.a3c1.starter-us-west-1.openshiftapps.com/index.php",
+          type: 'POST',
+          url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/',
           data: {
-            "recup": dataObject
+            "recup": hot2.getSourceData()
+          },
+          beforeSend: function () {
+            $('#loader2').addClass('loader');
           },
           success: function (data, textStatus, jqXHR) {
-			  console.log(data);
-            export2CSVFile(null, data, "export");
+            console.log(data);
+            export2CSVFile(null, data, 'export');
           },
           error: function (jqXHR, textStatus, errorThrown) {
             alert(textStatus)
           },
-          dataType: "json",
-		  timeout: 100000
+          complete: function () {
+            $('#loader2').removeClass('loader');
+          },
+          dataType: 'json',
+          timeout: 100000
         });
+      } else {
+        alert('Check your data');
       }
-    } else {
-      alert('Check your data');
     }
   });
 })
-
-var openFile2 = function (event) {
-  var input = event.target;
-  var reader = new FileReader();
-
-  reader.onload = function () {
-    hot2.destroy();
-	var workbook = XLSX.read(reader.result, {
-        type: 'binary'
-      });
-	var size = reader.result.length;
-	var jsonxls = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]],{header:1});
-    hot2Settings.colHeaders = jsonxls[0];
-	var jsonxls2 = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]],{ raw: false, defval: ""});
-	//delete jsonxls[0];
-	hot2Settings.data = jsonxls2;
-
-    hot2 = new Handsontable(hot2Element, hot2Settings);
-	activateUploadButton(size);
-  };
-  reader.onerror = function(err) {
-      alert('Input error');
-    };
-  reader.readAsBinaryString(input.files[0]);
-};

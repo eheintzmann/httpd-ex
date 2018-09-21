@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="assets/css/handsontable.full.min.css">
 
 	<!-- Custom styles -->
-	<link href="assets/css/custom.css" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/custom.css">
 </head>
 
 <body>
@@ -147,19 +147,23 @@
 							<h1 class="h2">Table 2</h1>
 							<div class="btn-toolbar mb-2 mb-md-0">
 								<div class="btn-group mr-2">
-									<label for="openfile2" class="btn btn-sm btn-outline-secondary custom-openfile">
-										<i class="icon ion-document"></i> Import
+									<label for="openfile2" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
+									 data-placement="left" title="Open Excel file (XLSX, CSV...)">
+										<i class="icon ion-document"></i> Open
 									</label>
-									<input id="openfile2" type='file' accept='text/csv' onchange='openFile2(event)'>
+									<input id="openfile2" type="file" accept="text/csv" onchange='openFile2(event)'>
 									<input type="submit" id="uploadTable2" disabled>
-									<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled" >
-										<i class="icon ion-upload" ></i> Upload
+									<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
+									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
+										<i class="icon ion-upload" disabled></i> Send
 									</label>
 								</div>
-
 							</div>
 						</div>
-						<table id="hot2"></table>
+						<div class="text-center">
+							<div id="loader2" class="d-inline-block"></div>
+						</div>
+						<div id="hot2"></div>
 					</div>
 					<div class="tab-pane fade" id="csv" role="tabpanel" aria-labelledby="csv-tab">
 						<h2>Upload CSV file</h2>
@@ -235,7 +239,7 @@
 
 	<!-- Handsontable Community Edition Javascript -->
 	<script src="assets/js/handsontable.full.min.js"></script>
-	
+
 	<!-- SheetJS Community Edition Javascript -->
 	<script src="assets/js/xlsx.full.min.js"></script>
 
