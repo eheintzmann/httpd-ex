@@ -1,6 +1,6 @@
 body {
   font-size: .875rem;
-}
+ }
 
 .feather {
   width: 16px;
@@ -164,5 +164,5 @@ label i.icon {
 / Handsontable
 */
 #hot3 {
-  margin-top: 15px;
+  margin-top: 20px;
 }

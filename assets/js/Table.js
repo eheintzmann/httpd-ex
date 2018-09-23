@@ -24,7 +24,7 @@ Table = function (params) {
     this.hotElement = document.getElementById(this.params.hotId);
 
     /** @type {Element} */
-    this.hotParentElement = document.getElementById(containerId);
+    this.hotParentElement = document.getElementById(this.params.containerId);
 
     /** @type {Object} */
     this.hotSettings = {
@@ -40,7 +40,6 @@ Table = function (params) {
             type: 'numeric',
             allowEmpty: false,
             className: 'htCenter'
-
           },
           {
             data: 'Tesla',
@@ -54,14 +53,12 @@ Table = function (params) {
             type: 'numeric',
             allowEmpty: false,
             className: 'htCenter'
-
           },
           {
             data: 'Honda',
             type: 'numeric',
             allowEmpty: false,
             className: 'htCenter'
-
           },
         ],*/
         stretchH: 'all',
@@ -104,7 +101,7 @@ Table = function (params) {
  */
 Table.prototype.calculateWidth = function () {
     //return ((parseInt(Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) - parseInt($('#' + this.params.containerId).offset().left)) - 15);
-    return (window.innerWidth - 300);
+    return ($(window).width() - 300);
 };
 
 
@@ -116,7 +113,7 @@ Table.prototype.calculateWidth = function () {
  */
 Table.prototype.calculateHeight = function () {
     //return (((parseInt(Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) - parseInt($('#' + this.params.containerId).offset().top)) / parseInt(this.params.tableCount)) - 15);/
-    return ((window.innerHeight - 200)/ this.params.tableCount);
+    return (($(window).height() - 200) / this.params.tableCount);
     //return 500 / this.params.tableCount;
 };
 
@@ -144,12 +141,13 @@ Table.prototype.export2Excel = function (items, fileTitle) {
  * @this {Table}
  */
 Table.prototype.toggleUploadButton = function () {
-    if ((this.hot) && (this.hot.countCols() !== 0) && (this.hot.countRows() !== 0)) {
-        $('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
-        $('#' + this.params.inputId).prop('disabled', false);
-    } else {
+    if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0))) {
         $('#' + this.params.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
         $('#' + this.params.inputId).prop('disabled', true);
+
+    } else {
+        $('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
+        $('#' + this.params.inputId).prop('disabled', false);
     }
 };
 
@@ -180,7 +178,11 @@ Table.prototype.disableLoader = function () {
  * @param {Object} event - Event Object
  */
 Table.prototype.openFile = function (event) {
-    this.readFile(event.target.files[0]);
+    if (event.target.files.length !== 1) {
+        alert('Please open 1 Excel file');
+    } else {
+        this.readFile(event.target.files[0]);
+    }
 };
 
 
@@ -198,7 +200,9 @@ Table.prototype.readFile = function (inputFile) {
         that.enableLoader();
 
         // Delete current HandsOnTable table
-        that.hot.destroy();
+        if (!(that.hot.isDestroyed)) {
+            that.hot.clear();
+        }
     }
 
     reader.onload = function () {
@@ -209,7 +213,8 @@ Table.prototype.readFile = function (inputFile) {
                 type: 'binary'
             });
         } catch (error) {
-            alert(error);
+            Table.displayInputError(error);
+            return;
         }
 
         // Table Headers
@@ -219,7 +224,9 @@ Table.prototype.readFile = function (inputFile) {
                 defval: ''
             });
         } catch (error) {
-            alert(error);
+            Table.displayInputError(error);
+            return;
+
         }
         that.hotSettings.colHeaders = json[0];
 
@@ -230,29 +237,32 @@ Table.prototype.readFile = function (inputFile) {
                 defval: ''
             });
         } catch (error) {
-            alert(error);
+            Table.displayInputError(error);
+            return;
+
         }
         delete workbook;
         that.hotSettings.data = json;
         delete json;
 
         try {
-            that.hot = new Handsontable(that.hotElement, that.hotSettings);
+            that.hot.updateSettings(that.hotSettings);
+            that.hot.loadData(that.hotSettings.data );
         } catch (error) {
-            alert(error);
+            Table.displayInputError(error);
+            return;
         }
-
-        // Activate Send Button
-        that.toggleUploadButton();
     };
 
     reader.onloadend = function () {
         that.disableLoader();
+        that.toggleUploadButton();
     }
-    reader.onerror = function (err) {
-        alert('Input error');
+
+    reader.onerror = function (error) {
+        Table.displayInputError(error);
     };
-    reader.readAsBinaryString(inputFile);
+    reader.readAsBinaryString(inputFile)
 }
 
 
@@ -260,6 +270,7 @@ Table.prototype.readFile = function (inputFile) {
  * Ajax call when "Send" button is clicked
  * 
  * @this {Table}
+ * @param {Event} event
  */
 Table.prototype.send = function (event) {
     var that = this;
@@ -290,3 +301,14 @@ Table.prototype.send = function (event) {
         }
     })
 };
+
+/**
+ * Display an error message
+ * 
+ * @this {Table}
+ * @param {string} error - Error message
+ */
+Table.displayInputError = function (error) {
+    console.log(error);
+    alert('Input Error');
+}

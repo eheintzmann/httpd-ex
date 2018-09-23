@@ -11,8 +11,8 @@ const params = {
 const params1 = {
     hotId: 'hot2',
     containerId: 'tables',
-    inputId: 'uploadTable2',
-    labelId: 'uploadTable2Label',
+    inputId: null,
+    labelId: null,
     loaderId: 'loader2',
     loaderClass: 'loader1',
     tableCount: 2
@@ -21,8 +21,8 @@ const params1 = {
 const params2 = {
     hotId: 'hot3',
     containerId: 'tables',
-    inputId: 'uploadTable2',
-    labelId: 'uploadTable2Label',
+    inputId: null,
+    labelId: null,
     loaderId: 'loader2',
     loaderClass: 'loader2',
     tableCount: 2
@@ -36,8 +36,9 @@ var tables = new Tables(new Table(params1), new Table(params2));
 $(document).ready(function () {
     $('#page-loader').css('visibility', 'hidden')
 
-    // Desactivate Send Button
+    // Desactivate Send Buttons
     table.toggleUploadButton();
+    tables.toggleUploadButton();
 
     /*// When windows is resized
     $(window).on('resize', function (event) {
