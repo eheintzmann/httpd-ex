@@ -33,12 +33,18 @@
 	<!-- Custom Javascript -->
 	<script defer src="assets/js/Table.js"></script>
 	<script defer src="assets/js/Tables.js"></script>
+	<script defer src="assets/js/common.js"></script>
 	<!-- <script src="assets/js/custom-table1.js"></script>
 	<script src="assets/js/custom-table2.js"></script>
 	<script src="assets/js/custom-csv.js"></script> -->
 </head>
 
 <body>
+	<div id="page-loader" class="d-flex flex-column justify-content-center">
+		<div class="d-flex flex-row justify-content-center">
+			<div class="loader1"></div>
+		</div>
+	</div>
 	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
 		<a class="navbar-brand col-sm-12 col-md-12 mr-0" href="#">DX</a>
 		<!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
@@ -153,7 +159,7 @@
 									 data-placement="left" title="Open Excel file (XLSX, CSV...)">
 										<i class="icon ion-document"></i> Open
 									</label>
-									<input id="openfile1" type="file" accept=".xlsx,.csv" onchange='table1.openFile(event)'>
+									<input id="openfile1" type="file" accept=".xlsx,.csv" onchange='table.openFile(event)'>
 									<input type="submit" id="uploadTable1" onclick="table1.send(event)" disabled>
 									<label for="uploadTable1" id="uploadTable1Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
 									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>

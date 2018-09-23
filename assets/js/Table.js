@@ -24,7 +24,7 @@ Table = function (params) {
     this.hotElement = document.getElementById(this.params.hotId);
 
     /** @type {Element} */
-    // this.hotParentElement = document.getElementById(containerId);
+    this.hotParentElement = document.getElementById(containerId);
 
     /** @type {Object} */
     this.hotSettings = {
@@ -100,12 +100,11 @@ Table = function (params) {
  * Calculate optimal Width for the Table
  * 
  * @this {Table}
- * @param {string} containerId - Id of the HTML container of the Table
- * @param {string} tableCount - Table count
  * @returns {number} - Width of the Table
  */
 Table.prototype.calculateWidth = function () {
-    return ((parseInt($(window).width()) - parseInt($('#' + this.params.containerId).offset().left)) - 15);
+    //return ((parseInt(Math.max(document.documentElement.clientWidth, window.innerWidth || 0)) - parseInt($('#' + this.params.containerId).offset().left)) - 15);
+    return (window.innerWidth - 300);
 };
 
 
@@ -113,12 +112,12 @@ Table.prototype.calculateWidth = function () {
  * Calculate optimal Height for the Table
  * 
  * @this {Table}
- * @param {string} containerId - Id of the HTML container of the Table
- * @param {string} tableCount - Table count
  * @returns {number} - Height of the Table
  */
 Table.prototype.calculateHeight = function () {
-    return (((parseInt($(window).height()) - parseInt($('#' + this.params.containerId).offset().top)) / parseInt(this.params.tableCount)) - 15);
+    //return (((parseInt(Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) - parseInt($('#' + this.params.containerId).offset().top)) / parseInt(this.params.tableCount)) - 15);/
+    return ((window.innerHeight - 200)/ this.params.tableCount);
+    //return 500 / this.params.tableCount;
 };
 
 
@@ -200,7 +199,6 @@ Table.prototype.readFile = function (inputFile) {
 
         // Delete current HandsOnTable table
         that.hot.destroy();
-
     }
 
     reader.onload = function () {
@@ -237,7 +235,6 @@ Table.prototype.readFile = function (inputFile) {
         delete workbook;
         that.hotSettings.data = json;
         delete json;
-
 
         try {
             that.hot = new Handsontable(that.hotElement, that.hotSettings);
@@ -293,24 +290,3 @@ Table.prototype.send = function (event) {
         }
     })
 };
-const params1 = {
-    hotId: "hot1",
-    containerId: "hot1",
-    inputId: 'uploadTable1',
-    labelId: 'uploadTable1Label',
-    loaderId: 'loader1',
-    loaderClass: 'loader1',
-    tableCount: 1
-}
-var table1 = new Table(params1);
-
-$(document).ready(function () {
-    // Desactivate Send Button
-    table1.toggleUploadButton();
-    $(window).on('resize', function () {
-        table1.hot.updateSettings({
-            width: table1.calculateWidth(),
-            height: table1.calculateHeight()
-        })
-    });
-});
