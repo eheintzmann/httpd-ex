@@ -1,77 +1,11 @@
-/**
-* export JSON to excel file
-* @param {Object} items - JSON Object to convert
-* @param {string} fileTitle - Title of the file to export
-*/
-function export2Excel(items, fileTitle) {
-  var workbook = XLSX.utils.book_new();
-  var sheet = XLSX.utils.json_to_sheet(items);
-  XLSX.utils.book_append_sheet(workbook, sheet, "main");
-  XLSX.writeFile(workbook, fileTitle +".xlsx");
-}
-
-/**
- * Read file
- *
- * @param {Object} event - Event Object
- */
-var openFile1 = function (event) {
-  var input = event.target;
-  var reader = new FileReader();
-
-  reader.onload = function () {
-    // Delete current HandsOnTable table
-    hot1.destroy();
-
-    // Read Excel file
-    var workbook = XLSX.read(reader.result, {
-      type: 'binary'
-    });
-
-    // Table Headers
-    var json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
-      header: 1,
-      defval: ''
-    });
-    hot1Settings.colHeaders = json[0];
-
-    // Table Body
-    var jsonxls2 = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
-      raw: false,
-      defval: ''
-    });
-    hot1Settings.data = jsonxls2;
-    hot1 = new Handsontable(hot1Element, hot1Settings);
-
-    // Activate Send Button
-    toggleUploadButton1(hot1);
-  };
-  reader.onerror = function (err) {
-    alert('Input error');
-  };
-  reader.readAsBinaryString(input.files[0]);
-};
-
-/**
- * Activate or Desactivate Send Button
- * 
- * @param {Object} hot1 - Handsontable Object
- */
-function toggleUploadButton1(h) {
-  if ( (h) && (h.countCols() !== 0) && (h.countRows() !== 0)) {
-    $('#uploadTable1Label').removeClass('disabled').prop('disabled', false).tooltip('enable');
-    $('#uploadTable1').prop('disabled', false);
-  } else {
-    $('#uploadTable1Label').addClass('disabled').prop('disabled', true).tooltip('disable');
-    $('#uploadTable1').prop('disabled', true);
-  }
-}
-
 /** @type {Object[]} */
 var hot1Data = [];
 
+/**@type {Element} */
+var hot1ParentElement = document.getElementById('table1');
+
 /** @type {Element} */
-var hot1Element = document.querySelector('#hot1');
+var hot1Element = document.getElementById('hot1');
 
 /** @type {Object} */
 var hot1Settings = {
@@ -113,14 +47,12 @@ var hot1Settings = {
   ],*/
   stretchH: 'all',
   width: function () {
-    var element = document.getElementById('table1');
-    var positionInfo = element.getBoundingClientRect();
+    var positionInfo = hot1ParentElement.getBoundingClientRect();
     return (positionInfo.width);
   },
   autoWrapRow: true,
   height: function () {
-    var element = document.getElementById('table1');
-    var positionInfo = element.getBoundingClientRect();
+    var positionInfo = hot1ParentElement.getBoundingClientRect();
     return (positionInfo.height);
   },
   //maxRows: 22,
@@ -148,8 +80,83 @@ var hot1Settings = {
 /** @type {Handsontable} */
 var hot1 = new Handsontable(hot1Element, hot1Settings);
 
+/**
+ * export JSON to excel file
+ * @param {Object} items - JSON Object to convert
+ * @param {string} fileTitle - Title of the file to export
+ */
+function export2Excel(items, fileTitle) {
+  var workbook = XLSX.utils.book_new();
+  var sheet = XLSX.utils.json_to_sheet(items);
+  XLSX.utils.book_append_sheet(workbook, sheet, "main");
+  XLSX.writeFile(workbook, fileTitle + ".xlsx", {
+    bookType: "xlsx"
+  });
+}
+
+/**
+ * Read file
+ *
+ * @param {Object} event - Event Object
+ */
+var openFile1 = function (event) {
+  var input = event.target;
+  var reader = new FileReader();
+
+  reader.onload = function () {
+    // Delete current HandsOnTable table
+    hot1.destroy();
+
+    // Read Excel file
+    var workbook = XLSX.read(reader.result, {
+      type: 'binary'
+    });
+
+    // Table Headers
+    var json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
+      header: 1,
+      defval: ''
+    });
+    hot1Settings.colHeaders = json[0];
+
+    // Table Body
+    json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
+      raw: false,
+      defval: ''
+    });
+    delete workbook;
+    hot1Settings.data = json;
+    delete json;
+    hot1 = new Handsontable(hot1Element, hot1Settings);
+
+    // Activate Send Button
+    toggleUploadButton1(hot1);
+  };
+  reader.onerror = function (err) {
+    alert('Input error');
+  };
+  reader.readAsBinaryString(input.files[0]);
+};
+
+/**
+ * Activate or Desactivate Send Button
+ * 
+ * @param {Object} hot1 - Handsontable Object
+ */
+function toggleUploadButton1(h) {
+  if ((h) && (h.countCols() !== 0) && (h.countRows() !== 0)) {
+    $('#uploadTable1Label').removeClass('disabled').prop('disabled', false).tooltip('enable');
+    $('#uploadTable1').prop('disabled', false);
+  } else {
+    $('#uploadTable1Label').addClass('disabled').prop('disabled', true).tooltip('disable');
+    $('#uploadTable1').prop('disabled', true);
+  }
+}
+
+
 // Desactivate Send Button
 toggleUploadButton1(hot1);
+
 
 // Ajax call when "Send" button is clicked
 $('#uploadTable1').click(function (e) {
@@ -166,20 +173,14 @@ $('#uploadTable1').click(function (e) {
             $('#loader1').addClass('loader');
           },
           success: function (data, textStatus, jqXHR) {
-			console.log(data);
-			$('#loader1').removeClass('loader');  
             export2Excel(data, 'export');
-
           },
-          error: function (jqXHR, textStatus, errorThrown) {
+          complete: function (qXHR, textStatus) {
             alert(textStatus);
             $('#loader1').removeClass('loader');
           },
-          complete: function () {
-            $('#loader1').removeClass('loader');
-          },
           dataType: 'json',
-          timeout: 100000
+          timeout: 500000
         });
       } else {
         alert('Check your data');

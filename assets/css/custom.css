@@ -17,10 +17,10 @@ body {
   top: 0;
   bottom: 0;
   left: 0;
+   /* Behind the navbar */
   z-index: 110;
-  /* Behind the navbar */
-  padding: 48px 0 0;
   /* Height of navbar */
+  padding: 48px 0 0;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
 
@@ -30,8 +30,8 @@ body {
   height: calc(100vh - 48px);
   padding-top: .5rem;
   overflow-x: hidden;
-  overflow-y: auto;
   /* Scrollable contents if viewport is shorter than content. */
+  overflow-y: auto;
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
@@ -123,13 +123,14 @@ label i.icon {
 }
 
 /*
- * Loader
+ * Loaders
  */
-.loader {
+.loader1,
+.loader2 {
+    /* Light grey */
   border: 16px solid #f3f3f3;
-  /* Light grey */
+    /* Blue */
   border-top: 16px solid #3498db;
-  /* Blue */
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -149,10 +150,6 @@ label i.icon {
 /*
 / Handsontable
 */
-#table1,
-#tables {
-  height: calc(50vh);
-}
 #hot3 {
-	margin-top: 20px;
+  margin-top: 15px;
 }
