@@ -69,3 +69,16 @@ Tables.prototype.toggleUploadButton = function () {
         toggleLastTab();
     }
 };
+
+
+/**
+ * Send files to the server
+ * 
+ * @param {Event} event - Event
+ */
+Tables.prototype.send = function(event) {
+    if(this.isFull()) {
+        this.table1.send(event);
+        this.table2.send(event);
+    }
+}
