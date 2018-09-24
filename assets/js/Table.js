@@ -82,6 +82,20 @@ Table = function (params) {
     this.hot = new Handsontable(this.hotElement, this.hotSettings);
 }
 
+/**
+ * Check if table is empty
+ * 
+ * @this {Table}
+ * @returns{boolean} - return true is Table is emty, fase if not
+ */
+Table.prototype.isEmpty = function () {
+    if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0)) || (this.hot.getSourceDataArray() === [])) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 /** 
  * Calculate optimal Width for the Table
@@ -104,7 +118,6 @@ Table.prototype.calculateWidth = function () {
 Table.prototype.calculateHeight = function () {
     //return (((parseInt(Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) - parseInt($('#' + this.params.containerId).offset().top)) / parseInt(this.params.tableCount)) - 15);/
     return (($(window).height() - 200) / this.params.tableCount);
-    //return 500 / this.params.tableCount;
 };
 
 
@@ -131,19 +144,19 @@ Table.prototype.export2Excel = function (items, fileTitle) {
  * @this {Table}
  */
 Table.prototype.toggleUploadButton = function () {
-    if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0))) {
-		if(!($('#' + this.params.labelId).hasClass('disabled'))) {
-			$('#' + this.params.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
-			$('#' + this.params.inputId).prop('disabled', true);
-			toggleLastTab('-');
-		}
+    if (this.isEmpty()) {
+        if (!($('#' + this.params.labelId).hasClass('disabled'))) {
+            $('#' + this.params.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
+            $('#' + this.params.inputId).prop('disabled', true);
+            toggleLastTab('-');
+        }
 
     } else {
-		if ($('#' + this.params.labelId).hasClass('disabled')){
-			$('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
-			$('#' + this.params.inputId).prop('disabled', false);
-			toggleLastTab('+');
-		}
+        if ($('#' + this.params.labelId).hasClass('disabled')) {
+            $('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
+            $('#' + this.params.inputId).prop('disabled', false);
+            toggleLastTab('+');
+        }
     }
 };
 
@@ -193,7 +206,7 @@ Table.prototype.readFile = function (inputFile) {
     var that = this;
 
     reader.onloadstart = function () {
-        that.enableLoader();      
+        that.enableLoader();
     }
 
     reader.onload = function () {
@@ -201,12 +214,11 @@ Table.prototype.readFile = function (inputFile) {
         // Read Excel file
 
         try {
-			var uint8View = new Uint8Array(reader.result);
-            var workbook = XLSX.read(uint8View, {
+            var workbook = XLSX.read(new Uint8Array(reader.result), {
                 type: 'array'
             });
         } catch (error) {
-            Table.displayInputError(error);
+            Table.displayInputError(error, 'Cannot read Excel file');
             return;
         }
 
@@ -217,7 +229,7 @@ Table.prototype.readFile = function (inputFile) {
                 defval: ''
             });
         } catch (error) {
-            Table.displayInputError(error);
+            Table.displayInputError(error, 'Input Error');
             return;
 
         }
@@ -230,22 +242,23 @@ Table.prototype.readFile = function (inputFile) {
                 defval: ''
             });
         } catch (error) {
-            Table.displayInputError(error);
+            Table.displayInputError(error, 'Input Error');
             return;
 
         }
         delete workbook;
-		if (!(that.hot.isDestroyed)) {
-            that.hot.clear();
-        }
+
         that.hotSettings.data = json;
         delete json;
 
         try {
+            if (!(that.hot.isDestroyed)) {
+                that.hot.clear();
+            }
             that.hot.updateSettings(that.hotSettings);
-            that.hot.loadData(that.hotSettings.data );
+            that.hot.loadData(that.hotSettings.data);
         } catch (error) {
-            Table.displayInputError(error);
+            Table.displayInputError(error, 'Cannot display file');
             return;
         }
     };
@@ -256,10 +269,12 @@ Table.prototype.readFile = function (inputFile) {
     }
 
     reader.onerror = function (error) {
-        Table.displayInputError(error);
+        Table.displayInputError(error, 'Input error');
+        that.disableLoader();
+
     };
-	this.enableLoader();
-	reader.readAsArrayBuffer(inputFile);
+    this.enableLoader();
+    reader.readAsArrayBuffer(inputFile);
 }
 
 
@@ -272,7 +287,7 @@ Table.prototype.readFile = function (inputFile) {
 Table.prototype.send = function (event) {
     var that = this;
     this.hot.validateCells(function (valid) {
-        if ((that.hot.countCols() !== 0) && (that.hot.countRows() !== 0)) {
+        if (!(this.isEmpty())) {
             if (valid) {
                 $.ajax({
                     type: 'POST',
@@ -303,9 +318,10 @@ Table.prototype.send = function (event) {
  * Display an error message
  * 
  * @this {Table}
- * @param {string} error - Error message
+ * @param {Object} error - Error message
+ * @param {string} msg - Message to display
  */
-Table.displayInputError = function (error) {
+Table.displayInputError = function (error, msg) {
     console.log(error);
-    alert('Input Error');
+    alert(msg);
 }
