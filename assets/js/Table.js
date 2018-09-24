@@ -91,6 +91,7 @@ Table = function (params) {
  */
 Table.prototype.isEmpty = function () {
     if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0))) {
+        //this.hot.clear();
         return true;
     } else {
         return false;
@@ -214,8 +215,11 @@ Table.prototype.readFile = function (inputFile) {
     reader.onload = function () {
 
         // Read Excel file
+        var json = [];
+        var workbook;
+
         try {
-            var workbook = XLSX.read(new Uint8Array(reader.result), {
+            workbook = XLSX.read(new Uint8Array(reader.result), {
                 type: 'array'
             });
         } catch (error) {
@@ -225,16 +229,22 @@ Table.prototype.readFile = function (inputFile) {
 
         // Table Headers
         try {
-            var json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
+            json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
                 header: 1,
                 defval: ''
             });
         } catch (error) {
             Table.displayInputError(error, 'Input Error');
             return;
-
         }
-        that.hotSettings.colHeaders = json[0];
+
+        if ((typeof json[0] === 'undefined') || (json[0].includes('\u0000\u0000\u0000\u0000\u0000'))) {
+            that.hotSettings.colHeaders = false;
+            that.hotSettings.rowHeaders = false;
+        } else {
+            that.hotSettings.colHeaders = json[0];
+            that.hotSettings.rowHeaders = true;
+        }
 
         // Table Body
         try {
@@ -249,13 +259,11 @@ Table.prototype.readFile = function (inputFile) {
         }
         delete workbook;
 
+
         that.hotSettings.data = json;
         delete json;
-
+        
         try {
-            if (!(that.hot.isDestroyed)) {
-                that.hot.clear();
-            }
             that.hot.updateSettings(that.hotSettings);
             that.hot.loadData(that.hotSettings.data);
         } catch (error) {

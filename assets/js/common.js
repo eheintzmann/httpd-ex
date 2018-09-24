@@ -43,7 +43,7 @@ function toggleLastTab() {
 };
 
 // When document is loaded
-$(document).ready(function () {
+$(function () {
     $('#page-loader').css('visibility', 'hidden')
 
     // Desactivate Send Buttons
