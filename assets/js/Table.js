@@ -1,6 +1,6 @@
 /**
  * Create new Table Object
- * 
+ *
  * @constructor
  * @this {Table}
  * @param {Object} params - Arguments of the table constructor
@@ -82,11 +82,12 @@ Table = function (params) {
     this.hot = new Handsontable(this.hotElement, this.hotSettings);
 }
 
+
 /**
  * Check if table is empty
  * 
  * @this {Table}
- * @returns{boolean} - return true is Table is emty, fase if not
+ * @returns{boolean} - return true is table is empty, false if not
  */
 Table.prototype.isEmpty = function () {
     if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0)) || (this.hot.getSourceDataArray() === [])) {
@@ -180,6 +181,7 @@ Table.prototype.disableLoader = function () {
     $('#' + this.params.loaderId).removeClass(this.params.loaderClass);
 }
 
+
 /**
  * Open file
  * 
@@ -212,7 +214,6 @@ Table.prototype.readFile = function (inputFile) {
     reader.onload = function () {
 
         // Read Excel file
-
         try {
             var workbook = XLSX.read(new Uint8Array(reader.result), {
                 type: 'array'
