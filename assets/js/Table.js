@@ -90,7 +90,7 @@ Table = function (params) {
  * @returns{boolean} - return true is table is empty, false if not
  */
 Table.prototype.isEmpty = function () {
-    if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0)) || (this.hot.getSourceDataArray() === [])) {
+    if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0))) {
         return true;
     } else {
         return false;
@@ -149,14 +149,14 @@ Table.prototype.toggleUploadButton = function () {
         if (!($('#' + this.params.labelId).hasClass('disabled'))) {
             $('#' + this.params.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
             $('#' + this.params.inputId).prop('disabled', true);
-            toggleLastTab('-');
+            toggleLastTab();
         }
 
     } else {
         if ($('#' + this.params.labelId).hasClass('disabled')) {
             $('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
             $('#' + this.params.inputId).prop('disabled', false);
-            toggleLastTab('+');
+            toggleLastTab();
         }
     }
 };
@@ -288,7 +288,7 @@ Table.prototype.readFile = function (inputFile) {
 Table.prototype.send = function (event) {
     var that = this;
     this.hot.validateCells(function (valid) {
-        if (!(this.isEmpty())) {
+        if (!(that.isEmpty())) {
             if (valid) {
                 $.ajax({
                     type: 'POST',

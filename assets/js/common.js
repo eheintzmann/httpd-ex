@@ -34,25 +34,12 @@ var tables = new Tables(new Table(params1), new Table(params2), 'uploadTable2Lab
 
 var count = 0;
 
-function toggleLastTab(op) {
-	if(op === '+') {
-		if (count >= 3) {
-			count = 3;
-		} else {
-			count++;
-		}
-	} else if(op === '-') {
-		if(count <= 0) {	
-			count = 0;
-		} else {
-			count--;
-		}
-	}
-	if (count >= 3) {
-		$('#last-tab').removeClass('disabled');
-	} else {
-		$('#last-tab').addClass('disabled');
-	}
+function toggleLastTab() {
+    if (!(table.isEmpty()) && (tables.isFull())) {
+        $('#last-tab').removeClass('disabled');
+    } else {
+        $('#last-tab').addClass('disabled');
+    }
 };
 
 // When document is loaded

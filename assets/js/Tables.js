@@ -12,12 +12,13 @@ Tables = function (table1, table2, labelId, inpudId) {
     this.table2 = table2;
     this.labelId = 'uploadTable2Label';
     this.inputId = 'uploadTable2';
+    var that = this
 
     this.table1.hot.addHook('afterLoadData', function (initialLoad) {
-        table1.toggleUploadButton();
+        that.toggleUploadButton();
     });
     this.table2.hot.addHook('afterLoadData', function (initialLoad) {
-        table2.toggleUploadButton();
+        that.toggleUploadButton();
     });
 }
 
@@ -29,7 +30,7 @@ Tables = function (table1, table2, labelId, inpudId) {
  * @returns {boolean} - true if tables is full, false if not
  */
 Tables.prototype.isFull = function () {
-    if ((this.table1.isEmpty() || (this.table2.isEmpty()))) {
+    if ((this.table1.isEmpty()) || (this.table2.isEmpty())) {
         return false;
     } else {
         return true;
@@ -59,20 +60,12 @@ Tables.prototype.openFiles = function (event) {
  */
 Tables.prototype.toggleUploadButton = function () {
     if (this.isFull()) {
-        if ($('#' + this.labelId).hasClass('disabled')) {
-            $('#' + this.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
-            $('#' + this.inputId).prop('disabled', false);
-            toggleLastTab('+');
-            toggleLastTab('+');
-            console.log('enableUpload');
-        }
+        $('#' + this.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
+        $('#' + this.inputId).prop('disabled', false);
+        toggleLastTab();
     } else {
-        if (!($('#' + this.labelId).hasClass('disabled'))) {
-            $('#' + this.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
-            $('#' + this.inputId).prop('disabled', true);
-            toggleLastTab('-');
-            toggleLastTab('-');
-            console.log('disableUpload');
-        }
+        $('#' + this.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
+        $('#' + this.inputId).prop('disabled', true);
+        toggleLastTab();
     }
 };
