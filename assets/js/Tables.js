@@ -38,12 +38,20 @@ Tables.prototype.openFiles = function (event) {
  */
 Tables.prototype.toggleUploadButton = function () {
     if ((this.table1.hot.isDestroyed) || (this.table2.hot.isDestroyed) || ((this.table1.hot.countCols() === 0) && (this.table1.hot.countRows() === 0)) || ((this.table2.hot.countCols() === 0) && (this.table2.hot.countRows() === 0))) {
-        $('#' + this.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
-        $('#' + this.inputId).prop('disabled', true);
-        console.log(this)
+   		if (!($('#' + this.labelId).hasClass('disabled'))){
+			$('#' + this.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
+			$('#' + this.inputId).prop('disabled', true);
+			toggleLastTab('-');
+			toggleLastTab('-');
+			console.log('disableUpload');
+		}
     } else {
-        $('#' + this.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
-        $('#' + this.inputId).prop('disabled', false);
-        console.log('enable')
+		if ($('#' + this.labelId).hasClass('disabled')){
+			$('#' + this.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
+			$('#' + this.inputId).prop('disabled', false);
+			toggleLastTab('+');
+			toggleLastTab('+');	
+			console.log('enableUpload');
+		}			
     }
 };

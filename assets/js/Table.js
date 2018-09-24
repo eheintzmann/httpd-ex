@@ -7,16 +7,6 @@
  */
 Table = function (params) {
 
-    const {
-        hotId,
-        containerId,
-        inputId,
-        labelId,
-        loaderId,
-        loaderClass,
-        tableCount
-    } = params;
-
     /** @type {Object} */
     this.params = params;
 
@@ -142,12 +132,18 @@ Table.prototype.export2Excel = function (items, fileTitle) {
  */
 Table.prototype.toggleUploadButton = function () {
     if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0))) {
-        $('#' + this.params.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
-        $('#' + this.params.inputId).prop('disabled', true);
+		if(!($('#' + this.params.labelId).hasClass('disabled'))) {
+			$('#' + this.params.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
+			$('#' + this.params.inputId).prop('disabled', true);
+			toggleLastTab('-');
+		}
 
     } else {
-        $('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
-        $('#' + this.params.inputId).prop('disabled', false);
+		if ($('#' + this.params.labelId).hasClass('disabled')){
+			$('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
+			$('#' + this.params.inputId).prop('disabled', false);
+			toggleLastTab('+');
+		}
     }
 };
 
@@ -197,20 +193,17 @@ Table.prototype.readFile = function (inputFile) {
     var that = this;
 
     reader.onloadstart = function () {
-        that.enableLoader();
-
-        // Delete current HandsOnTable table
-        if (!(that.hot.isDestroyed)) {
-            that.hot.clear();
-        }
+        that.enableLoader();      
     }
 
     reader.onload = function () {
 
         // Read Excel file
+
         try {
-            var workbook = XLSX.read(reader.result, {
-                type: 'binary'
+			var uint8View = new Uint8Array(reader.result);
+            var workbook = XLSX.read(uint8View, {
+                type: 'array'
             });
         } catch (error) {
             Table.displayInputError(error);
@@ -242,6 +235,9 @@ Table.prototype.readFile = function (inputFile) {
 
         }
         delete workbook;
+		if (!(that.hot.isDestroyed)) {
+            that.hot.clear();
+        }
         that.hotSettings.data = json;
         delete json;
 
@@ -262,7 +258,8 @@ Table.prototype.readFile = function (inputFile) {
     reader.onerror = function (error) {
         Table.displayInputError(error);
     };
-    reader.readAsBinaryString(inputFile)
+	this.enableLoader();
+	reader.readAsArrayBuffer(inputFile);
 }
 
 

@@ -144,7 +144,7 @@
 						 aria-selected="false">Market Share Constraints</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link disabled" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv"
+						<a class="nav-link disabled" id="last-tab" data-toggle="tab" href="#last" role="tab" aria-controls="last"
 						 aria-selected="false">Allocation</a>
 					</li>
 				</ul>
@@ -191,10 +191,29 @@
 								</div>
 							</div>
 						</div>
-
 						<div id="tables">
 							<div id="hot2"></div>
 							<div id="hot3"></div>
+						</div>						
+					</div>
+					<div class="tab-pane fade text-center" id="last" role="tabpanel" aria-labelledby="last-tab">
+						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+							<h1 class="h2">Allocation</h1>
+							<div id="loader2"></div>
+							<div class="btn-toolbar mb-2 mb-md-0">
+								<div class="btn-group mr-2">
+									<label for="openfile3" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
+									 data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
+										<i class="icon ion-document"></i> Open
+									</label>
+									<input id="openfile3" type="file" accept=".xlsx,.csv">
+									<input type="submit" id="uploadTable3" disabled>
+									<label for="uploadTable3" id="uploadTable3Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
+									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
+										<i class="icon ion-upload" disabled></i> Send
+									</label>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
