@@ -80,6 +80,9 @@ Table = function (params) {
 
     /** @type {Handsontable} */
     this.hot = new Handsontable(this.hotElement, this.hotSettings);
+	
+	/** @type {boolean} */
+	this.isUploaded = false;
 }
 
 
@@ -87,7 +90,7 @@ Table = function (params) {
  * Check if table is empty
  * 
  * @this {Table}
- * @returns{boolean} - return true is table is empty, false if not
+ * @returns {boolean} - return true is table is empty, false if not
  */
 Table.prototype.isEmpty = function () {
     if ((this.hot.isDestroyed) || ((this.hot.countCols() === 0) && (this.hot.countRows() === 0))) {
@@ -98,6 +101,15 @@ Table.prototype.isEmpty = function () {
     }
 }
 
+
+/**
+* Check if table has been uploaded
+*
+* @returns {boolean} - return true is table has been uploaded, false if not
+*/
+/*Table.prototype.isUploaded = function () {
+	return (this.isUploaded);
+}*/
 
 /** 
  * Calculate optimal Width for the Table
@@ -160,14 +172,12 @@ Table.prototype.toggleUploadButton = function () {
         if (!($('#' + this.params.labelId).hasClass('disabled'))) {
             $('#' + this.params.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
             $('#' + this.params.inputId).prop('disabled', true);
-            toggleLastTab();
         }
 
     } else {
         if ($('#' + this.params.labelId).hasClass('disabled')) {
             $('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
             $('#' + this.params.inputId).prop('disabled', false);
-            toggleLastTab();
         }
     }
 };
@@ -318,10 +328,16 @@ Table.prototype.send = function (event) {
                         that.enableLoader();
                     },
                     success: function (data, textStatus, jqXHR) {
+						that.isUploaded = true;
                         that.export2Excel(data, 'export');
+
                     },
+					error: function ( jqXHR, textStatus, errorThrown ) {
+						that.isUploaded = false;
+					},
                     complete: function (qXHR, textStatus) {
                         that.disableLoader();
+						toggleLastTab();
                     },
                     dataType: 'json',
                     timeout: 500000

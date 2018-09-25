@@ -188,10 +188,10 @@
 										<i class="icon ion-document"></i> Open
 									</label>
 									<input id="openfile2" type="file" accept=".xlsx,.csv" onchange='tables.openFiles(event)' multiple>
-									<input type="submit" id="uploadTable2" disabled>
+									<input type="submit" id="uploadTable2" onclick="tables.send(event)" disabled>
 									<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
 									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
-										<i class="icon ion-upload" onclick="tables.send(event)" disabled></i> Send
+										<i class="icon ion-upload"  disabled></i> Send
 									</label>
 								</div>
 							</div>

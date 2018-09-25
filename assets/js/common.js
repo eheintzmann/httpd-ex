@@ -36,7 +36,7 @@ var table = new Table(params);
 var tables = new Tables(new Table(params1), new Table(params2), 'uploadTable2Label', 'uploadTable2');
 
 function toggleLastTab() {
-    if (!(table.isEmpty()) && (tables.isFull())) {
+    if (table.isUploaded && tables.isUploaded()) {
         $('#last-tab').removeClass('disabled');
     } else {
         $('#last-tab').addClass('disabled');

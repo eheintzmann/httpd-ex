@@ -7,7 +7,6 @@
  * @param {Object} table2 - Instance of Table
  */
 Tables = function (table1, table2, labelId, inpudId) {
-
     this.table1 = table1;
     this.table2 = table2;
     this.labelId = 'uploadTable2Label';
@@ -37,6 +36,19 @@ Tables.prototype.isFull = function () {
     }
 }
 
+/**
+* Check if all tables have been uploaded
+*
+* @ return {boolean} - return true is all tables have been uploaded, false if not
+*/
+Tables.prototype.isUploaded = function () {
+	if(this.table1.isUploaded && this.table2.isUploaded) {
+		return true;		
+	} else {
+		return false;
+	}
+}
+
 
 /**
  * Open files
@@ -62,11 +74,9 @@ Tables.prototype.toggleUploadButton = function () {
     if (this.isFull()) {
         $('#' + this.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
         $('#' + this.inputId).prop('disabled', false);
-        toggleLastTab();
     } else {
         $('#' + this.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
         $('#' + this.inputId).prop('disabled', true);
-        toggleLastTab();
     }
 };
 
@@ -80,5 +90,7 @@ Tables.prototype.send = function (event) {
     if (this.isFull()) {
         this.table1.send(event);
         this.table2.send(event);
-    }
+    } else {
+		console.log('not Full');
+	}
 }
