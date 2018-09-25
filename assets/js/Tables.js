@@ -12,7 +12,7 @@ Tables = function (table1, table2, labelId, inpudId) {
     this.table2 = table2;
     this.labelId = 'uploadTable2Label';
     this.inputId = 'uploadTable2';
-    var that = this
+    var that = this;
 
     this.table1.hot.addHook('afterLoadData', function (initialLoad) {
         that.toggleUploadButton();
@@ -76,8 +76,8 @@ Tables.prototype.toggleUploadButton = function () {
  * 
  * @param {Event} event - Event
  */
-Tables.prototype.send = function(event) {
-    if(this.isFull()) {
+Tables.prototype.send = function (event) {
+    if (this.isFull()) {
         this.table1.send(event);
         this.table2.send(event);
     }

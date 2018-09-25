@@ -5,7 +5,8 @@ const params = {
     labelId: 'uploadTable1Label',
     loaderId: 'loader1',
     loaderClass: 'loader1',
-    tableCount: 1
+    tableCount: 1,
+    url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/'
 }
 
 const params1 = {
@@ -15,7 +16,8 @@ const params1 = {
     labelId: null,
     loaderId: 'loader2',
     loaderClass: 'loader1',
-    tableCount: 2
+    tableCount: 2,
+    url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/'
 }
 
 const params2 = {
@@ -25,14 +27,13 @@ const params2 = {
     labelId: null,
     loaderId: 'loader2',
     loaderClass: 'loader2',
-    tableCount: 2
+    tableCount: 2,
+    url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/'
 }
 
 var table = new Table(params);
 
 var tables = new Tables(new Table(params1), new Table(params2), 'uploadTable2Label', 'uploadTable2');
-
-var count = 0;
 
 function toggleLastTab() {
     if (!(table.isEmpty()) && (tables.isFull())) {

@@ -131,12 +131,22 @@ Table.prototype.calculateHeight = function () {
  * @param {string} fileTitle - Title of the file to export
  */
 Table.prototype.export2Excel = function (items, fileTitle) {
-    var workbook = XLSX.utils.book_new();
-    var sheet = XLSX.utils.json_to_sheet(items);
-    XLSX.utils.book_append_sheet(workbook, sheet, 'main');
-    XLSX.writeFile(workbook, fileTitle + '.xlsx', {
-        bookType: 'xlsx'
-    });
+    var workbook, sheet;
+    try {
+        workbook = XLSX.utils.book_new();
+        sheet = XLSX.utils.json_to_sheet(items);
+        XLSX.utils.book_append_sheet(workbook, sheet, 'main');
+        XLSX.writeFile(workbook, fileTitle + '.xlsx', {
+            bookType: 'xlsx'
+        });
+    } catch (error) {
+        Table.displayError(error, 'Cannot export file');
+        return
+    } finally {
+        delete sheet;
+        delete workbook;
+
+    }
 }
 
 
@@ -223,7 +233,7 @@ Table.prototype.readFile = function (inputFile) {
                 type: 'array'
             });
         } catch (error) {
-            Table.displayInputError(error, 'Cannot read Excel file');
+            Table.displayError(error, 'Cannot read Excel file');
             return;
         }
 
@@ -234,7 +244,7 @@ Table.prototype.readFile = function (inputFile) {
                 defval: ''
             });
         } catch (error) {
-            Table.displayInputError(error, 'Input Error');
+            Table.displayError(error, 'Input Error');
             return;
         }
 
@@ -253,7 +263,7 @@ Table.prototype.readFile = function (inputFile) {
                 defval: ''
             });
         } catch (error) {
-            Table.displayInputError(error, 'Input Error');
+            Table.displayError(error, 'Input Error');
             return;
 
         }
@@ -262,12 +272,12 @@ Table.prototype.readFile = function (inputFile) {
 
         that.hotSettings.data = json;
         delete json;
-        
+
         try {
             that.hot.updateSettings(that.hotSettings);
             that.hot.loadData(that.hotSettings.data);
         } catch (error) {
-            Table.displayInputError(error, 'Cannot display file');
+            Table.displayError(error, 'Cannot display file');
             return;
         }
     };
@@ -278,7 +288,7 @@ Table.prototype.readFile = function (inputFile) {
     }
 
     reader.onerror = function (error) {
-        Table.displayInputError(error, 'Input error');
+        Table.displayError(error, 'Input error');
         that.disableLoader();
 
     };
@@ -300,7 +310,7 @@ Table.prototype.send = function (event) {
             if (valid) {
                 $.ajax({
                     type: 'POST',
-                    url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/',
+                    url: that.params.url,
                     data: {
                         "recup": that.hot.getSourceData()
                     },
@@ -330,7 +340,7 @@ Table.prototype.send = function (event) {
  * @param {Object} error - Error message
  * @param {string} msg - Message to display
  */
-Table.displayInputError = function (error, msg) {
+Table.displayError = function (error, msg) {
     console.log(error);
     alert(msg);
 }
