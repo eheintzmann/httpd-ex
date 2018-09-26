@@ -18,7 +18,7 @@ Table = function (params) {
 
     /** @type {Object} */
     this.hotSettings = {
-        data: [],
+        data: this.params.initialData,
         /*columns: [{
             data: 'Year',
             type: 'numeric',
@@ -80,9 +80,6 @@ Table = function (params) {
 
     /** @type {Handsontable} */
     this.hot = new Handsontable(this.hotElement, this.hotSettings);
-	
-	/** @type {boolean} */
-	this.isUploaded = false;
 }
 
 
@@ -101,15 +98,6 @@ Table.prototype.isEmpty = function () {
     }
 }
 
-
-/**
-* Check if table has been uploaded
-*
-* @returns {boolean} - return true is table has been uploaded, false if not
-*/
-/*Table.prototype.isUploaded = function () {
-	return (this.isUploaded);
-}*/
 
 /** 
  * Calculate optimal Width for the Table
@@ -167,13 +155,12 @@ Table.prototype.export2Excel = function (items, fileTitle) {
  * 
  * @this {Table}
  */
-Table.prototype.toggleUploadButton = function () {
+Table.prototype.toggleResetButton = function () {
     if (this.isEmpty()) {
         if (!($('#' + this.params.labelId).hasClass('disabled'))) {
             $('#' + this.params.labelId).addClass('disabled').prop('disabled', true).tooltip('disable');
             $('#' + this.params.inputId).prop('disabled', true);
         }
-
     } else {
         if ($('#' + this.params.labelId).hasClass('disabled')) {
             $('#' + this.params.labelId).removeClass('disabled').prop('disabled', false).tooltip('enable');
@@ -204,6 +191,27 @@ Table.prototype.disableLoader = function () {
 
 
 /**
+ * Reset Table
+ *
+ * @this {Table}
+ */
+Table.prototype.reset = function () {
+    this.hotSettings.colHeaders = false;
+    this.hotSettings.rowHeaders = false;
+    this.hotSettings.data = this.params.initialData;
+    try {
+        this.hot.destroy();
+        this.hot = new Handsontable(this.hotElement, this.hotSettings);
+    } catch (error) {
+        Table.displayError(error, 'Cannot reset table');
+        return;
+    } finally {
+        toggleLastTab();
+    }
+}
+
+
+/**
  * Open file
  * 
  * @this {Table}
@@ -211,7 +219,7 @@ Table.prototype.disableLoader = function () {
  */
 Table.prototype.openFile = function (event) {
     if (event.target.files.length !== 1) {
-        alert('Please open 1 Excel file');
+        alert('Please open one Excel file');
     } else {
         this.readFile(event.target.files[0]);
     }
@@ -284,8 +292,8 @@ Table.prototype.readFile = function (inputFile) {
         delete json;
 
         try {
-            that.hot.updateSettings(that.hotSettings);
-            that.hot.loadData(that.hotSettings.data);
+            that.hot.destroy();
+            that.hot = new Handsontable(that.hotElement, that.hotSettings);
         } catch (error) {
             Table.displayError(error, 'Cannot display file');
             return;
@@ -294,12 +302,16 @@ Table.prototype.readFile = function (inputFile) {
 
     reader.onloadend = function () {
         that.disableLoader();
-        that.toggleUploadButton();
+        that.toggleResetButton();
+        toggleLastTab();
+
     }
 
     reader.onerror = function (error) {
         Table.displayError(error, 'Input error');
         that.disableLoader();
+        toggleLastTab();
+
 
     };
     this.enableLoader();
@@ -328,16 +340,15 @@ Table.prototype.send = function (event) {
                         that.enableLoader();
                     },
                     success: function (data, textStatus, jqXHR) {
-						that.isUploaded = true;
+                        that.isUploaded = true;
                         that.export2Excel(data, 'export');
 
                     },
-					error: function ( jqXHR, textStatus, errorThrown ) {
-						that.isUploaded = false;
-					},
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        that.isUploaded = false;
+                    },
                     complete: function (qXHR, textStatus) {
                         that.disableLoader();
-						toggleLastTab();
                     },
                     dataType: 'json',
                     timeout: 500000

@@ -135,8 +135,7 @@ label i.icon {
 /*
  * Loaders
  */
-.loader1,
-.loader2 {
+.big-loader {
   /* Light grey */
   border: 16px solid #f3f3f3;
   /* Blue */
@@ -147,6 +146,19 @@ label i.icon {
   height: 80px;
   animation: spin 2s linear infinite;
 }
+
+.small-loader {
+  /* Light grey */
+  border: 8px solid #f3f3f3;
+  /* Blue */
+  border-top: 8px solid #3498db;
+  border-bottom: 8px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+}
+
 
 @keyframes spin {
   0% {
@@ -173,6 +185,6 @@ label i.icon {
 /*
 / Handsontable
 */
-#hot3 {
+/*#hot3 {
   margin-top: 20px;
-}
+}*/

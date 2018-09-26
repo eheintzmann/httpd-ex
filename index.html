@@ -32,25 +32,21 @@
 
 	<!-- Custom Javascript -->
 	<script defer src="assets/js/Table.js"></script>
-	<script defer src="assets/js/Tables.js"></script>
 	<script defer src="assets/js/common.js"></script>
-	<!-- <script src="assets/js/custom-table1.js"></script>
-	<script src="assets/js/custom-table2.js"></script>
-	<script src="assets/js/custom-csv.js"></script> -->
 </head>
 
 <body>
 	<div id="page-loader" class="d-flex flex-column justify-content-center">
 		<div class="d-flex flex-row justify-content-center">
-			<div class="loader1"></div>
+			<div class="big-loader"></div>
 		</div>
 	</div>
 	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
 		<a class="navbar-brand col-sm-12 col-md-12 mr-0" href="#">
-		<img src="assets/img/Icon_Hacker_v4_64_logo.png">
+			<img src="assets/img/Icon_Hacker_v4_64_logo.png">
 			<span class="font-weight-bold ml-4">POC Smart ComBid</span>
 		</a>
-		
+
 		<!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
 		<ul class="navbar-nav px-3">
 			<li class="nav-item text-nowrap">
@@ -64,7 +60,7 @@
 			<nav class="col-md-2 d-none d-md-block bg-dark sidebar">
 				<div class="sidebar-sticky">
 					<h4 class="ml-5">Instructions<h4>
-					<!-- <ul class="nav flex-column">
+							<!-- <ul class="nav flex-column">
 						<li class="nav-item">
 							<a class="nav-link active" href="#">
 								<span data-feather="home"></span>
@@ -141,12 +137,12 @@
 			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item">
-						<a class="nav-link active" id="table1-tab" data-toggle="tab" href="#table1" role="tab" aria-controls="table1"
+						<a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1"
 						 aria-selected="true">ConBid needs</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" id="table2-tab" data-toggle="tab" href="#table2" role="tab" aria-controls="table2"
-						 aria-selected="false">Market Share Constraints</a>
+						<a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Market
+							Share Constraints</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link disabled" id="last-tab" data-toggle="tab" href="#last" role="tab" aria-controls="last"
@@ -154,7 +150,7 @@
 					</li>
 				</ul>
 				<div class="tab-content ">
-					<div class="tab-pane show active text-center " id="table1" role="tabpanel" aria-labelledby="table1-tab">
+					<div class="tab-pane show active text-center " id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 							<h1 class="h2">ConBid needs</h1>
 							<div id="loader1"></div>
@@ -164,20 +160,18 @@
 									 data-placement="top" title="Open Excel file (XLSX, CSV...)">
 										<i class="icon ion-document"></i> Open
 									</label>
-									<input id="openfile1" type="file" accept=".xlsx,.csv" onchange='table.openFile(event)'>
-									<input type="submit" id="uploadTable1" onclick="table.send(event)" disabled>
+									<input id="openfile1" type="file" accept=".xlsx,.csv" onchange='table1.openFile(event)'>
+									<input type="submit" id="uploadTable1" onclick="table1.reset(event)" disabled>
 									<label for="uploadTable1" id="uploadTable1Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
-									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
-										<i class="icon ion-upload" disabled></i> Send
+									 data-toggle="tooltip" data-placement="top" title="Reset table" disabled>
+										<i class="icon ion-upload" disabled></i> Reset
 									</label>
 								</div>
 							</div>
 						</div>
-						<div id="table">
-							<div id="hot1"></div>
-						</div>
+						<div id="hot1"></div>
 					</div>
-					<div class="tab-pane text-center" id="table2" role="tabpanel" aria-labelledby="table2-tab">
+					<div class="tab-pane text-center" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
 						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 							<h1 class="h2">Market Share Constraints</h1>
 							<div id="loader2"></div>
@@ -187,19 +181,36 @@
 									 data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
 										<i class="icon ion-document"></i> Open
 									</label>
-									<input id="openfile2" type="file" accept=".xlsx,.csv" onchange='tables.openFiles(event)' multiple>
-									<input type="submit" id="uploadTable2" onclick="tables.send(event)" disabled>
+									<input id="openfile2" type="file" accept=".xlsx,.csv" onchange='table2.openFile(event)'>
+									<input type="submit" id="uploadTable2" onclick="table2.reset(event)" disabled>
 									<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
-									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
-										<i class="icon ion-upload"  disabled></i> Send
+									 data-toggle="tooltip" data-placement="top" title="Reset table " disabled>
+										<i class="icon ion-upload" disabled></i> Reset
 									</label>
 								</div>
 							</div>
 						</div>
-						<div id="tables">
-							<div id="hot2"></div>
-							<div id="hot3"></div>
-						</div>						
+						<div id="hot2"></div>
+						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+							<h1 class="h2">Market Share Constraints</h1>
+							<div id="loader3"></div>
+							<div class="btn-toolbar mb-2 mb-md-0">
+								<div class="btn-group mr-2">
+									<label for="openfile3" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
+									 data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
+										<i class="icon ion-document"></i> Open
+									</label>
+									<input id="openfile3" type="file" accept=".xlsx,.csv" onchange='table3.openFile(event)'>
+									<input type="submit" id="uploadTable3" onclick="table3.reset(event)" disabled>
+									<label for="uploadTable3" id="uploadTable3Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
+									 data-toggle="tooltip" data-placement="top" title="Reset table" disabled>
+										<i class="icon ion-upload" disabled></i> Reset
+									</label>
+								</div>
+							</div>
+						</div>
+						<div id="hot3"></div>
+
 					</div>
 					<div class="tab-pane text-center" id="last" role="tabpanel" aria-labelledby="last-tab">
 						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -207,15 +218,15 @@
 							<div id="loader2"></div>
 							<div class="btn-toolbar mb-2 mb-md-0">
 								<div class="btn-group mr-2">
-									<label for="openfile3" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
+									<label for="openfile4" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
 									 data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
 										<i class="icon ion-document"></i> Open
 									</label>
-									<input id="openfile3" type="file" accept=".xlsx,.csv">
-									<input type="submit" id="uploadTable3" disabled>
-									<label for="uploadTable3" id="uploadTable3Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
-									 data-toggle="tooltip" data-placement="top" title="Send table to distant server" disabled>
-										<i class="icon ion-upload" disabled></i> Send
+									<input id="openfile4" type="file" accept=".xlsx,.csv">
+									<input type="submit" id="uploadTable4" disabled>
+									<label for="uploadTable4" id="uploadTable4Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
+									 data-toggle="tooltip" data-placement="top" title="Reset table" disabled>
+										<i class="icon ion-upload" disabled></i> Reset
 									</label>
 								</div>
 							</div>
