@@ -118,8 +118,13 @@ Table.prototype.calculateWidth = function () {
  * @returns {number} - Height of the Table
  */
 Table.prototype.calculateHeight = function () {
-    //return (((parseInt(Math.max(document.documentElement.clientHeight, window.innerHeight || 0)) - parseInt($('#' + this.params.containerId).offset().top)) / parseInt(this.params.tableCount)) - 15);/
-    return (($(window).height() - 200) / this.params.tableCount);
+    var height = 0;
+    if (this.params.tableCount === 1) {
+        height = $(window).height() - 200;
+    } else if (this.params.tableCount === 2) {
+        height = ($(window).height() - 300) / 2;
+    }
+    return height;
 };
 
 
