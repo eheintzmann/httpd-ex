@@ -213,22 +213,69 @@
 
 					</div>
 					<div class="tab-pane text-center" id="last" role="tabpanel" aria-labelledby="last-tab">
-						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-							<h1 class="h2">Allocation</h1>
-							<div id="loader2"></div>
-							<div class="btn-toolbar mb-2 mb-md-0">
-								<div class="btn-group mr-2">
-									<label for="openfile4" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
-									 data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
-										<i class="icon ion-document"></i> Open
-									</label>
-									<input id="openfile4" type="file" accept=".xlsx,.csv">
-									<input type="submit" id="uploadTable4" disabled>
-									<label for="uploadTable4" id="uploadTable4Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
-									 data-toggle="tooltip" data-placement="top" title="Reset table" disabled>
-										<i class="icon ion-upload" disabled></i> Reset
-									</label>
-								</div>
+						<div class="row">
+							<div class="col-md-8">
+
+							</div>
+							<div class="col-md-4 text-left">
+								<h3 class="text-center">Optimization Parameters</h3>
+								<form>
+									<fieldset>
+										<h5 class="text-center">Global Parameters</h5>
+										<div class="form-group">
+											<label for="scenarioName">Scenario Name</label>
+											<input type="text" class="form-control" id="scenarioName" placeholder="Scenario Name">
+										</div>
+										<div class="form-group form-check">
+											<input class="form-check-input" type="checkbox" value="" id="checkBaseline">
+											<label class="form-check-label" for="checkBaseline">
+												Check Baseline
+											</label>
+										</div>
+										<div class="form-group">
+											<label for="timeLimit">Time Limit (s)</label>
+											<input type="number" class="form-control" id="timeLimit" value="30" placeholder="Time Limit (s)">
+										</div>
+									</fieldset>
+									<fieldset>
+										<h5 class="text-center">Constraints Activation</h5>
+										<div class="form-group form-check">
+											<input class="form-check-input" type="checkbox" value="true" id="marketShare" checked>
+											<label class="form-check-label" for="marketShare">
+												Market Share
+											</label>
+										</div>
+										<div class="form-group form-check">
+											<input class="form-check-input" type="checkbox" value="" id="changedAllocation">
+											<label class="form-check-label" for="changedAllocation">
+												Limit the number of changed allocation
+											</label>
+										</div>
+										<div class="form-group">
+											<label for="maxChange">Max Change (%)</label>
+											<input type="number" class="form-control" id="maxChange" value="60" placeholder="Max Change (%)">
+										</div>
+										<div class="form-group form-check">
+											<input class="form-check-input" type="checkbox" value="" id="preferedMill">
+											<label class="form-check-label" for="preferedMill">
+												Prefered Mill
+											</label>
+										</div>
+										<div class="form-group">
+											<label for="penalty">Penalty for Prefered Mill ($)</label>
+											<input type="number" class="form-control" id="penalty" value="5000" placeholder="Penalty for Prefered Mill ($)">
+										</div>
+										<div class="form-group form-check">
+											<input class="form-check-input" type="checkbox" value="" id="limitMill">
+											<label class="form-check-label" for="limitMill">
+												Limit the number of Mills per Work Package Specifications
+											</label>
+										</div>
+									</fieldset>
+									<div class="form-group row btn">
+										<button type="submit" class="btn">Optimize allocation</button>
+									</div>
+								</form>
 							</div>
 						</div>
 					</div>
