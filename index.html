@@ -31,6 +31,9 @@
 	<script defer src="assets/js/xlsx.full.min.js"></script>
 
 	<!-- Custom Javascript -->
+	<script defer src="assets/js/CustomError.js"></script>
+	<script defer src="assets/js/ExcelJSON.js"></script>
+	<script defer src="assets/js/Spreadsheet.js"></script>
 	<script defer src="assets/js/Table.js"></script>
 	<script defer src="assets/js/common.js"></script>
 </head>
@@ -46,91 +49,12 @@
 			<img src="assets/img/Icon_Hacker_v4_64_logo.png">
 			<span class="font-weight-bold ml-4">POC Smart ComBid</span>
 		</a>
-
-		<!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-		<ul class="navbar-nav px-3">
-			<li class="nav-item text-nowrap">
-				<a class="nav-link" href="#">Sign out</a>
-			</li>
-		</ul>-->
 	</nav>
-
 	<div class="container-fluid ">
 		<div class="row">
 			<nav class="col-md-2 d-none d-md-block bg-dark sidebar">
 				<div class="sidebar-sticky">
-					<h4 class="ml-5">Instructions<h4>
-							<!-- <ul class="nav flex-column">
-						<li class="nav-item">
-							<a class="nav-link active" href="#">
-								<span data-feather="home"></span>
-								Dashboard <span class="sr-only">(current)</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="file"></span>
-								Orders
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="shopping-cart"></span>
-								Products
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="users"></span>
-								Customers
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="bar-chart-2"></span>
-								Reports
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="layers"></span>
-								Integrations
-							</a>
-						</li>
-					</ul>
-
-					<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-						<span>Saved reports</span>
-						<a class="d-flex align-items-center text-muted" href="#">
-							<span data-feather="plus-circle"></span>
-						</a>
-					</h6>
-					<ul class="nav flex-column mb-2">
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="file-text"></span>
-								Current month
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="file-text"></span>
-								Last quarter
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="file-text"></span>
-								Social engagement
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="file-text"></span>
-								Year-end sale
-							</a>
-						</li>
-					</ul>-->
+					<h4 class="ml-5">Instructions</h4>
 				</div>
 			</nav>
 
@@ -138,152 +62,146 @@
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item">
 						<a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1"
-						 aria-selected="true">ConBid needs</a>
+						aria-selected="true">ConBid needs</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Market
 							Share Constraints</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link disabled" id="last-tab" data-toggle="tab" href="#last" role="tab" aria-controls="last"
-						 aria-selected="false">Allocation</a>
-					</li>
-				</ul>
-				<div class="tab-content ">
-					<div class="tab-pane show active text-center " id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-							<h1 class="h2">ConBid needs</h1>
-							<div id="loader1"></div>
-							<div class="btn-toolbar mb-2 mb-md-0">
-								<div class="btn-group mr-2">
-									<label for="openfile1" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
-									 data-placement="top" title="Open Excel file (XLSX, CSV...)">
-										<i class="icon ion-document"></i> Open
-									</label>
-									<input id="openfile1" type="file" accept=".xlsx,.csv" onchange='table1.openFile(event)'>
-									<input type="submit" id="uploadTable1" onclick="table1.reset(event)" disabled>
-									<label for="uploadTable1" id="uploadTable1Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
-									 data-toggle="tooltip" data-placement="top" title="Reset table" disabled>
-										<i class="icon ion-upload" disabled></i> Reset
-									</label>
-								</div>
-							</div>
-						</div>
-						<div id="hot1"></div>
-					</div>
-					<div class="tab-pane text-center" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-							<h1 class="h2">Market Share Constraints</h1>
-							<div id="loader2"></div>
-							<div class="btn-toolbar mb-2 mb-md-0">
-								<div class="btn-group mr-2">
-									<label for="openfile2" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
-									 data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
-										<i class="icon ion-document"></i> Open
-									</label>
-									<input id="openfile2" type="file" accept=".xlsx,.csv" onchange='table2.openFile(event)'>
-									<input type="submit" id="uploadTable2" onclick="table2.reset(event)" disabled>
-									<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
-									 data-toggle="tooltip" data-placement="top" title="Reset table " disabled>
-										<i class="icon ion-upload" disabled></i> Reset
-									</label>
-								</div>
-							</div>
-						</div>
-						<div id="hot2"></div>
-						<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-							<h1 class="h2">Market Share Constraints</h1>
-							<div id="loader3"></div>
-							<div class="btn-toolbar mb-2 mb-md-0">
-								<div class="btn-group mr-2">
-									<label for="openfile3" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
-									 data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
-										<i class="icon ion-document"></i> Open
-									</label>
-									<input id="openfile3" type="file" accept=".xlsx,.csv" onchange='table3.openFile(event)'>
-									<input type="submit" id="uploadTable3" onclick="table3.reset(event)" disabled>
-									<label for="uploadTable3" id="uploadTable3Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
-									 data-toggle="tooltip" data-placement="top" title="Reset table" disabled>
-										<i class="icon ion-upload" disabled></i> Reset
-									</label>
-								</div>
-							</div>
-						</div>
-						<div id="hot3"></div>
-
-					</div>
-					<div class="tab-pane text-center" id="last" role="tabpanel" aria-labelledby="last-tab">
-						<div class="row">
-							<div class="col-md-8">
-
-							</div>
-							<div class="col-md-4 text-left">
-								<h3 class="text-center">Optimization Parameters</h3>
-								<form>
-									<fieldset>
-										<h5 class="text-center">Global Parameters</h5>
-										<div class="form-group">
-											<label for="scenarioName">Scenario Name</label>
-											<input type="text" class="form-control" id="scenarioName" placeholder="Scenario Name">
-										</div>
-										<div class="form-group form-check">
-											<input class="form-check-input" type="checkbox" value="" id="checkBaseline">
-											<label class="form-check-label" for="checkBaseline">
-												Check Baseline
-											</label>
-										</div>
-										<div class="form-group">
-											<label for="timeLimit">Time Limit (s)</label>
-											<input type="number" class="form-control" id="timeLimit" value="30" placeholder="Time Limit (s)">
-										</div>
-									</fieldset>
-									<fieldset>
-										<h5 class="text-center">Constraints Activation</h5>
-										<div class="form-group form-check">
-											<input class="form-check-input" type="checkbox" value="true" id="marketShare" checked>
-											<label class="form-check-label" for="marketShare">
-												Market Share
-											</label>
-										</div>
-										<div class="form-group form-check">
-											<input class="form-check-input" type="checkbox" value="" id="changedAllocation">
-											<label class="form-check-label" for="changedAllocation">
-												Limit the number of changed allocation
-											</label>
-										</div>
-										<div class="form-group">
-											<label for="maxChange">Max Change (%)</label>
-											<input type="number" class="form-control" id="maxChange" value="60" placeholder="Max Change (%)">
-										</div>
-										<div class="form-group form-check">
-											<input class="form-check-input" type="checkbox" value="" id="preferedMill">
-											<label class="form-check-label" for="preferedMill">
-												Prefered Mill
-											</label>
-										</div>
-										<div class="form-group">
-											<label for="penalty">Penalty for Prefered Mill ($)</label>
-											<input type="number" class="form-control" id="penalty" value="5000" placeholder="Penalty for Prefered Mill ($)">
-										</div>
-										<div class="form-group form-check">
-											<input class="form-check-input" type="checkbox" value="" id="limitMill">
-											<label class="form-check-label" for="limitMill">
-												Limit the number of Mills per Work Package Specifications
-											</label>
-										</div>
-									</fieldset>
-									<div class="form-group row btn">
-										<button type="submit" class="btn">Optimize allocation</button>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" id="last-tab" data-toggle="tab" href="#last" role="tab" aria-controls="last"
+							aria-selected="false">Allocation</a>
+						</li>
+					</ul>
+					<div class="tab-content ">
+						<div class="tab-pane show active text-center " id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+							<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+								<h1 class="h2">ConBid needs</h1>
+								<div id="loader1"></div>
+								<div class="btn-toolbar mb-2 mb-md-0">
+									<div class="btn-group mr-2">
+										<label for="openfile1" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
+										data-placement="top" title="Open Excel file (XLSX, CSV...)">
+										<i class="icon ion-document"></i>Open</label>
+										<input id="openfile1" type="file" accept=".xlsx,.csv" onchange='table1.openFile(event)'>
+										<input type="submit" id="uploadTable1" onclick="table1.reset(event)" disabled>
+										<label for="uploadTable1" id="uploadTable1Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
+										data-toggle="tooltip" data-placement="top" title="Reset table" disabled>
+										<i class="icon ion-upload" disabled></i>Reset</label>
 									</div>
-								</form>
+								</div>
+							</div>
+							<div id="hot1"></div>
+						</div>
+						<div class="tab-pane text-center" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+							<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+								<h1 class="h2">Market Share Constraints</h1>
+								<div id="loader2"></div>
+								<div class="btn-toolbar mb-2 mb-md-0">
+									<div class="btn-group mr-2">
+										<label for="openfile2" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
+										data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
+										<i class="icon ion-document"></i>Open</label>
+										<input id="openfile2" type="file" accept=".xlsx,.csv" onchange='table2.openFile(event)'>
+										<input type="submit" id="uploadTable2" onclick="table2.reset(event)" disabled>
+										<label for="uploadTable2" id="uploadTable2Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
+										data-toggle="tooltip" data-placement="top" title="Reset table " disabled>
+										<i class="icon ion-upload" disabled></i>Reset</label>
+									</div>
+								</div>
+							</div>
+							<div id="hot2"></div>
+							<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+								<h1 class="h2">Market Share Constraints</h1>
+								<div id="loader3"></div>
+								<div class="btn-toolbar mb-2 mb-md-0">
+									<div class="btn-group mr-2">
+										<label for="openfile3" class="btn btn-sm btn-outline-secondary custom-openfile" data-toggle="tooltip"
+										data-placement="top" title="Open 2 Excel files (XLSX, CSV...)">
+										<i class="icon ion-document"></i>Open</label>
+										<input id="openfile3" type="file" accept=".xlsx,.csv" onchange='table3.openFile(event)'>
+										<input type="submit" id="uploadTable3" onclick="table3.reset(event)" disabled>
+										<label for="uploadTable3" id="uploadTable3Label" class="btn btn-sm btn-outline-secondary custom-openfile disabled"
+										data-toggle="tooltip" data-placement="top" title="Reset table" disabled>
+										<i class="icon ion-upload" disabled></i>Reset</label>
+									</div>
+								</div>
+							</div>
+							<div id="hot3"></div>
+
+						</div>
+						<div class="tab-pane text-center" id="last" role="tabpanel" aria-labelledby="last-tab">
+							<div class="row">
+								<div class="col-md-8">
+
+								</div>
+								<div class="col-md-4 text-left">
+									<h3 class="text-center">Optimization Parameters</h3>
+									<form>
+										<fieldset>
+											<h5 class="text-center">Global Parameters</h5>
+											<div class="form-group">
+												<label for="scenarioName">Scenario Name</label>
+												<input type="text" class="form-control" id="scenarioName" placeholder="Scenario Name">
+											</div>
+											<div class="form-group form-check">
+												<input class="form-check-input" type="checkbox" value="" id="checkBaseline">
+												<label class="form-check-label" for="checkBaseline">
+													Check Baseline
+												</label>
+											</div>
+											<div class="form-group">
+												<label for="timeLimit">Time Limit (s)</label>
+												<input type="number" class="form-control" id="timeLimit" value="30" placeholder="Time Limit (s)">
+											</div>
+										</fieldset>
+										<fieldset>
+											<h5 class="text-center">Constraints Activation</h5>
+											<div class="form-group form-check">
+												<input class="form-check-input" type="checkbox" value="true" id="marketShare" checked>
+												<label class="form-check-label" for="marketShare">
+													Market Share
+												</label>
+											</div>
+											<div class="form-group form-check">
+												<input class="form-check-input" type="checkbox" value="" id="changedAllocation">
+												<label class="form-check-label" for="changedAllocation">
+													Limit the number of changed allocation
+												</label>
+											</div>
+											<div class="form-group">
+												<label for="maxChange">Max Change (%)</label>
+												<input type="number" class="form-control" id="maxChange" value="60" placeholder="Max Change (%)">
+											</div>
+											<div class="form-group form-check">
+												<input class="form-check-input" type="checkbox" value="" id="preferedMill">
+												<label class="form-check-label" for="preferedMill">
+													Prefered Mill
+												</label>
+											</div>
+											<div class="form-group">
+												<label for="penalty">Penalty for Prefered Mill ($)</label>
+												<input type="number" class="form-control" id="penalty" value="5000" placeholder="Penalty for Prefered Mill ($)">
+											</div>
+											<div class="form-group form-check">
+												<input class="form-check-input" type="checkbox" value="" id="limitMill">
+												<label class="form-check-label" for="limitMill">
+													Limit the number of Mills per Work Package Specifications
+												</label>
+											</div>
+										</fieldset>
+										<div class="form-group row btn">
+											<button type="submit" class="btn">Optimize allocation</button>
+										</div>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</main>
+				</main>
+			</div>
 		</div>
-	</div>
 
-</body>
+	</body>
 
-</html>
+	</html>

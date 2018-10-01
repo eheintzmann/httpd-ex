@@ -1,46 +1,38 @@
+// url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/'
+
 const params1 = {
-    initialData: [],
     hotId: 'hot1',
     containerId: 'hot1',
     inputId: 'uploadTable1',
     labelId: 'uploadTable1Label',
     loaderId: 'loader1',
     loaderClass: 'small-loader',
-    tableCount: 1,
-    url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/'
 }
 
 const params2 = {
-    initialData: [],
     hotId: 'hot2',
     containerId: 'hot2',
     inputId: 'uploadTable2',
     labelId: 'uploadTable2Label',
     loaderId: 'loader2',
     loaderClass: 'small-loader',
-    tableCount: 2,
-    url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/'
 }
 
 const params3 = {
-    initialData: [],
     hotId: 'hot3',
     containerId: 'hot3',
     inputId: 'uploadTable3',
     labelId: 'uploadTable3Label',
     loaderId: 'loader3',
     loaderClass: 'small-loader',
-    tableCount: 2,
-    url: 'http://php-back.a3c1.starter-us-west-1.openshiftapps.com/'
 }
 
 var table1 = new Table(params1);
 var table2 = new Table(params2);
 var table3 = new Table(params3);
 
-
 function toggleLastTab() {
-    if (table1.isEmpty() || table2.isEmpty() || table3.isEmpty()) {
+    if (table1.spreadsheet.isVoid() || table2.spreadsheet.isVoid() || table3.spreadsheet.isVoid()) {
         $('#last-tab').addClass('disabled');
     } else {
         $('#last-tab').removeClass('disabled');
